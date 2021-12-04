@@ -1,0 +1,8 @@
+.pageContainer
+{
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 1px 2px 0 rgb(150, 150, 150);
+    margin: 20px 10px 0 5px;
+    padding: 10px 15px 30px 30px;
+}

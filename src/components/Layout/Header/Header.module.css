@@ -1,0 +1,71 @@
+.header
+{
+   background-color: rgb(11, 104, 226);
+   height: 70px;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   position: relative;
+}
+
+.header__Btn
+{
+    border: 0;
+    background-color: transparent;
+    fill: white;
+    width: 70px;
+    height: 100%;
+    transition: 300ms;
+}
+
+@media (min-width: 760px){
+    .header__Btn:hover
+    {
+        background-color: rgb(67, 146, 250);
+        cursor: pointer;
+    }
+
+    .header__Btn_notifBtn:hover
+    {
+        background-color: rgb(67, 146, 250);
+        cursor: pointer;
+    }
+
+    .header__Btn:focus-visible
+    {
+        outline: 0;
+        background-color: rgb(67, 146, 250);
+    }
+
+    .header__Btn_notifBtn:focus-visible
+    {
+        outline: 0;
+        background-color: rgb(67, 146, 250);
+    }
+}
+
+@media (max-width: 760px){
+   .header
+    {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        justify-content: space-evenly;
+    }
+
+    .header__Btn_notifBtn
+    {
+        position: static;
+    }
+
+    .header__Btn:active
+    {
+        background-color: rgb(67, 146, 250);
+    }
+
+    .header__Btn_notifBtn:active
+    {
+        background-color: rgb(67, 146, 250);
+    }
+}
