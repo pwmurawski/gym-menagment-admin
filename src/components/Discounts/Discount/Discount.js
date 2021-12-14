@@ -1,23 +1,36 @@
-import { useState } from 'react';
+import PropTypes from "prop-types";
+import { useState } from "react";
 
-export default function Discount(props) {
-    const [showEditCustomer, setShowEditCustomer] = useState(false);
+const propTypes = {
+  name: PropTypes.string.isRequired,
+  discount: PropTypes.any.isRequired,
+  status: PropTypes.any.isRequired,
+};
 
-    return (
-        <tr onDoubleClick={() => { setShowEditCustomer(true) }}>
-            {showEditCustomer ? (
-                <>
-                    <td>edit</td>
-                    <td>edit</td>
-                    <td>edit</td>
-                </>
-            ) : (
-                <>
-                    <td>{props.name}</td>
-                    <td>{`${props.discount}%`}</td>
-                    <td>{`${props.status}`}</td>
-                </>
-            )}
-        </tr>
-    );
+export default function Discount({ name, discount, status }) {
+  const [showEditCustomer, setShowEditCustomer] = useState(false);
+
+  return (
+    <tr
+      onDoubleClick={() => {
+        setShowEditCustomer(true);
+      }}
+    >
+      {showEditCustomer ? (
+        <>
+          <td>edit</td>
+          <td>edit</td>
+          <td>edit</td>
+        </>
+      ) : (
+        <>
+          <td>{name}</td>
+          <td>{`${discount}%`}</td>
+          <td>{`${status}`}</td>
+        </>
+      )}
+    </tr>
+  );
 }
+
+Discount.propTypes = propTypes;

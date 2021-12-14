@@ -1,21 +1,23 @@
-import './App.css';
-import Layout from './components/Layout/Layout';
-import Header from './components/Layout/Header/Header';
-import Menu from './components/Layout/Menu/Menu';
-import Footer from './components/Layout/Footer/Footer';
-import { MenuBtnContext } from './context/Context';
-import { useState, Suspense } from 'react';
-import Home from './page/Home/Home';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import NotFound from './page/404/404';
-import Ticket from './page/Ticket/Ticket';
-import Discount from './page/Discount/Discount';
-import LoadingIcon from './components/UI/LoadingIcon/LoadingIcon';
-import Search from './page/Search/Search';
+/* eslint-disable react/jsx-no-constructed-context-values */
+import "./App.css";
+import { useReducer, Suspense } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout/Layout";
+import Header from "./components/Layout/Header/Header";
+import Menu from "./components/Layout/Menu/Menu";
+import Footer from "./components/Layout/Footer/Footer";
+import Home from "./page/Home/Home";
+import NotFound from "./page/404/404";
+import Ticket from "./page/Ticket/Ticket";
+import Discount from "./page/Discount/Discount";
+import LoadingIcon from "./components/UI/LoadingIcon/LoadingIcon";
+import Search from "./page/Search/Search";
+import ReducerContext from "./context/Context";
+import { reducer, initialState } from "./reducer";
 
 export default function App() {
-
-  const [menuBtnClick, setMenuBtnClick] = useState(false);
+  const [state, dispatch] = useReducer(reducer, initialState);
+  document.body.setAttribute("class", state.theme);
 
   const header = <Header />;
 
@@ -24,7 +26,7 @@ export default function App() {
   const content = (
     <Suspense fallback={<LoadingIcon />}>
       <Routes>
-        <Route path='*' element={<NotFound />} />
+        <Route path="*" element={<NotFound />} />
         <Route path="/" element={<Home />} />
         <Route path="/ticket" element={<Ticket />} />
         <Route path="/discount" element={<Discount />} />
@@ -37,17 +39,9 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <MenuBtnContext.Provider value={{
-        menuBtnClick,
-        setMenuBtnClick
-      }}>
-        <Layout
-          header={header}
-          menu={menu}
-          content={content}
-          footer={footer}
-        />
-      </MenuBtnContext.Provider>
+      <ReducerContext.Provider value={{ state, dispatch }}>
+        <Layout header={header} menu={menu} content={content} footer={footer} />
+      </ReducerContext.Provider>
     </BrowserRouter>
   );
 }

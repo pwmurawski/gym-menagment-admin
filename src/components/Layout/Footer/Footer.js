@@ -1,7 +1,3 @@
 export default function Footer() {
-    return (
-        <>
-            Gym © 2021
-        </>
-    );
+  return <>Gym © 2021</>;
 }

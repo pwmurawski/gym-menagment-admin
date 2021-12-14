@@ -30,8 +30,8 @@
 {
     width: 270px;
     height: 100%;
-    padding: 0;
-    margin-top: 15px;
+    padding: 15px 0 15px;
+    margin: 0;
 }
 
 .list__item
@@ -43,7 +43,7 @@
     margin-bottom: 10px;
     list-style: none;
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
     align-content: center;
     transition: 300ms;
@@ -80,6 +80,19 @@
 .link
 {
     text-decoration: none;
+}
+
+.themeDark .list__item
+{
+    background-color: rgb(60, 78, 119);
+    box-shadow: 0 1px 2px 0 rgb(0, 17, 56);
+}
+
+.themeDark .menu__logo
+{
+    background-color: rgb(60, 78, 119);
+    box-shadow: 0 1px 2px 0 rgb(0, 17, 56);
+    transition: 1000ms;
 }
 
 @media (min-width: 760px) {
@@ -123,6 +136,12 @@
         background-color: whitesmoke;
         overflow-y: auto;
     }
+
+    .themeDark
+    {
+        box-shadow: 0 0 5px 1px rgb(0, 17, 56);
+    }
+
     .menu:hover
     {
         width: 100%;
@@ -136,6 +155,11 @@
     .menu__list
     {
         width: 100%;
+    }
+
+    .themeDark .menu__list
+    {
+        background-color: rgb(28, 41, 73);
     }
 
     .list__item

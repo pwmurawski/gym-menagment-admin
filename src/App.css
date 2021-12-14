@@ -3,3 +3,9 @@ body
     background-color: whitesmoke;
     color: black;
 }
+
+.themeDark
+{
+    background-color: rgb(28, 41, 73);
+    transition: 1000ms;
+}

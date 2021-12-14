@@ -5,17 +5,29 @@
    display: flex;
    align-items: center;
    justify-content: space-between;
-   position: relative;
+}
+
+.header__btnContainer
+{
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
 }
 
 .header__Btn
-{
+{ 
     border: 0;
     background-color: transparent;
     fill: white;
     width: 70px;
     height: 100%;
     transition: 300ms;
+}
+
+.themeDark .header__Btn
+{
+    fill: black;
 }
 
 @media (min-width: 760px){
@@ -25,19 +37,7 @@
         cursor: pointer;
     }
 
-    .header__Btn_notifBtn:hover
-    {
-        background-color: rgb(67, 146, 250);
-        cursor: pointer;
-    }
-
     .header__Btn:focus-visible
-    {
-        outline: 0;
-        background-color: rgb(67, 146, 250);
-    }
-
-    .header__Btn_notifBtn:focus-visible
     {
         outline: 0;
         background-color: rgb(67, 146, 250);
@@ -54,17 +54,7 @@
         justify-content: space-evenly;
     }
 
-    .header__Btn_notifBtn
-    {
-        position: static;
-    }
-
     .header__Btn:active
-    {
-        background-color: rgb(67, 146, 250);
-    }
-
-    .header__Btn_notifBtn:active
     {
         background-color: rgb(67, 146, 250);
     }

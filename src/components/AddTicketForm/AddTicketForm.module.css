@@ -9,6 +9,34 @@
     box-shadow: 0 1px 2px 0 rgb(150, 150, 150);
 }
 
+.themeDark
+{
+    background-color: rgb(76, 97, 146);
+    box-shadow: 0 1px 2px 0 rgb(0, 17, 56);
+}
+
+.themeDark .form__input
+{
+    background-color: rgb(157, 199, 255);
+    box-shadow: 0 1px 2px 0 rgb(0, 17, 56);
+}
+
+.themeDark .form__input::placeholder
+{
+    color: black;
+}
+
+.themeDark .form__select
+{
+    background-color: rgb(157, 199, 255);
+    box-shadow: 0 1px 2px 0 rgb(0, 17, 56);
+}
+
+.themeDark .form__btn
+{
+    box-shadow: 0 1px 2px 0 rgb(0, 17, 56);
+}
+
 .form__input
 {
     min-width: 40px;
@@ -96,10 +124,10 @@
     text-align: center;
     --width: 400px;
     padding: 5px;
-    box-shadow: 0 1px 2px 0px gray;
+    box-shadow: 0 1px 2px 0 rgb(0, 17, 56);
     width: var(--width);
     position: absolute;
-    top: -25px;
+    top: 40px;
     left: calc(50% - var(--width)/2);
 }
 
@@ -110,10 +138,10 @@
     text-align: center;
     --width: 400px;
     padding: 5px;
-    box-shadow: 0 1px 2px 0px gray;
+    box-shadow: 0 1px 2px 0 rgb(0, 17, 56);
     width: var(--width);
     position: absolute;
-    top: -25px;
+    top: 40px;
     left: calc(50% - var(--width)/2);
 }
 
@@ -149,5 +177,12 @@
 
     .form__select{
         width: 60px;
+    }
+}
+
+@media (max-width: 760px) {
+    .form
+    {
+        margin: 0 4px 10px 0;
     }
 }

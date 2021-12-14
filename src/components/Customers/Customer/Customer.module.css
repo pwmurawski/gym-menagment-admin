@@ -1,0 +1,69 @@
+.fristName
+{
+    display: flex;
+    align-items: center;
+    height: 50px;
+}
+
+.fristName__icon
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 150px;
+    background-color: greenyellow;
+    box-shadow: 0 1px 2px 0 rgb(0, 17, 56);
+    margin-left: 5px;
+    width: 40px;
+    height: 40px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.fristName__containerIcon
+{
+    flex: 1;
+}
+
+.firstName__text
+{
+    flex: 5;
+}
+
+.customerItem
+{
+    position: relative;
+}
+
+.customerItem:hover .tooltip
+{
+    visibility: visible;
+    opacity: 1;
+}
+
+.tooltip
+{
+    --width: 150px;
+    position: absolute;
+    top: -10px;
+    left: calc(50% - var(--width)/2);
+    width: var(--width);
+    background-color: rgb(60, 78, 119);
+    box-shadow: 0 1px 2px 0 rgb(0, 17, 56);
+    border-radius: 20px;
+    color: white;
+    font-size: 12px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 2000ms cubic-bezier(1, 0, 0, 0);
+}
+
+@media (max-width: 760px) {
+    .fristName__icon
+    {
+        width: 30px;
+        height: 30px;
+        font-size: 8px;
+        margin-left: 1px;
+    }
+}

@@ -1,39 +1,73 @@
-import { useEffect, useRef } from 'react';
-import styles from './CustomersTable.module.css';
+import PropTypes from "prop-types";
+import { useContext, useEffect, useRef } from "react";
+import ReducerContext from "../../context/Context";
+import styles from "./CustomersTable.module.css";
 
-export default function CustomersTable(props) {
-    const tableScrolRef = useRef(null);
+const propTypes = {
+  pagination: PropTypes.bool,
+  size: PropTypes.string,
+  tablePage: PropTypes.object,
+  setTablePage: PropTypes.func,
+  children: PropTypes.array.isRequired,
+};
 
-    useEffect(() => {
-        tableScrolRef.current.style.maxHeight = props.size ?? '60vh';
-    }, [props.size]);
+const defaultProps = {
+  pagination: false,
+  size: "60vh",
+  tablePage: null,
+  setTablePage: null,
+};
 
-    if (props.pagination) {
-        const scrollHandler = () => {
-            const scrollBarPosition = tableScrolRef.current.scrollTop;
-            const positionSetTablePage = tableScrolRef.current.scrollHeight - tableScrolRef.current.clientHeight;
+export default function CustomersTable({
+  pagination,
+  size,
+  tablePage,
+  setTablePage,
+  children,
+}) {
+  const tableScrolRef = useRef(null);
+  const stateGlobal = useContext(ReducerContext);
 
-            for (let i = 0; i < props.tablePage.totalPages - 1; i++) {
-                if (props.tablePage.currentPage === i && scrollBarPosition === positionSetTablePage) {
-                    props.setTablePage({ ...props.tablePage, currentPage: i + 1 });
-                }
-            }
+  useEffect(() => {
+    tableScrolRef.current.style.maxHeight = size;
+  }, []);
+
+  if (pagination) {
+    const scrollHandler = () => {
+      const scrollBarPosition = tableScrolRef.current.scrollTop;
+      const positionSetTablePage =
+        tableScrolRef.current.scrollHeight - tableScrolRef.current.clientHeight;
+
+      for (let i = 0; i < tablePage.totalPages - 1; i += 1) {
+        if (
+          tablePage.currentPage === i &&
+          scrollBarPosition === positionSetTablePage
+        ) {
+          setTablePage({ ...tablePage, currentPage: i + 1 });
         }
+      }
+    };
 
-        return (
-            <div onScroll={scrollHandler} ref={tableScrolRef} className={styles.tableScrollContainer}>
-                <table className={styles.table}>
-                    {props.children}
-                </table>
-            </div>
-        );
-    } else {
-        return (
-            <div ref={tableScrolRef} className={styles.tableScrollContainer}>
-                <table className={styles.table}>
-                    {props.children}
-                </table>
-            </div>
-        );
-    }
+    return (
+      <div
+        onScroll={scrollHandler}
+        ref={tableScrolRef}
+        className={styles.tableScrollContainer}
+      >
+        <table className={`${styles.table} ${styles[stateGlobal.state.theme]}`}>
+          {children}
+        </table>
+      </div>
+    );
+  }
+  return (
+    <div ref={tableScrolRef} className={styles.tableScrollContainer}>
+      <table className={`${styles.table} ${styles[stateGlobal.state.theme]}`}>
+        {children}
+      </table>
+    </div>
+  );
 }
+
+CustomersTable.propTypes = propTypes;
+CustomersTable.defaultProps = defaultProps;

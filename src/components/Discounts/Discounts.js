@@ -1,9 +1,26 @@
-import Discount from './Discount/Discount';
+import PropTypes from "prop-types";
+import Discount from "./Discount/Discount";
 
-export default function Discounts(props) {
-    return (
-        <>
-            {props.discountsArray.map(discount => <Discount key={discount.id} discountsArray={props.discountsArray} setDiscountsArray={props.setDiscountsArray} {...discount} />)}
-        </>
-    );
+const propTypes = {
+  discountsArray: PropTypes.array.isRequired,
+  setDiscountsArray: PropTypes.func.isRequired,
+};
+
+export default function Discounts({ discountsArray, setDiscountsArray }) {
+  return (
+    <>
+      {discountsArray.map((discount) => (
+        <Discount
+          key={discount.id}
+          discountsArray={discountsArray}
+          setDiscountsArray={setDiscountsArray}
+          name={discount.name}
+          discount={discount.discount}
+          status={discount.status}
+        />
+      ))}
+    </>
+  );
 }
+
+Discounts.propTypes = propTypes;

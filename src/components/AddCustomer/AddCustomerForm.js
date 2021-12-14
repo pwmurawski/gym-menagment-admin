@@ -1,151 +1,199 @@
-import { useEffect, useState } from 'react';
-import styles from './AddCustomerForm.module.css';
+import PropTypes from "prop-types";
+import { useState, useEffect, useContext } from "react";
+import styles from "./AddCustomerForm.module.css";
+import ReducerContext from "../../context/Context";
+import FetchApi from "../../helpers/fetchApi";
 
-export default function AddCustomerForm(props) {
-    const initFormData = {
-        firstName: '',
-        lastName: '',
-        number: '',
-        discountId: '',
-        code: '',
-        ticketType: ''
-    }
+const propTypes = {
+  tablePage: PropTypes.object.isRequired,
+  customersArray: PropTypes.array.isRequired,
+  setCustomersArray: PropTypes.func.isRequired,
+  discountArray: PropTypes.array.isRequired,
+  ticketArray: PropTypes.array.isRequired,
+};
 
-    const [discounts, setDiscounts] = useState([]);
-    const [tickets, setTickets] = useState([]);
-    const [backendMsg, setBackendMsg] = useState(null);
-    const [customerData, setCustomerData] = useState(initFormData);
-    const [isSubmit, setIsSubmit] = useState(false);
+export default function AddCustomerForm({
+  tablePage,
+  customersArray,
+  setCustomersArray,
+  discountArray,
+  ticketArray,
+}) {
+  const initFormData = {
+    firstName: "",
+    lastName: "",
+    number: "",
+    discountId: "",
+    code: "",
+    ticketType: "",
+  };
 
-    const fetchDiscount = async (signal) => {
-        try {
-            const request = await fetch('/discount', {
-                signal: signal
-            });
-            const res = await request.json();
+  const [backendMsg, setBackendMsg] = useState(null);
+  const [customerData, setCustomerData] = useState(initFormData);
+  const [isSubmit, setIsSubmit] = useState(false);
+  const stateGlobal = useContext(ReducerContext);
 
-            setDiscounts(res.discounts);
-        } catch (error) {
-            if (!signal?.aborted) {
-                console.log(error);
-            }
-        }
-    }
+  const submit = async (signal) => {
+    FetchApi(
+      "/customer/add",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        signal,
+        body: JSON.stringify(customerData),
+      },
+      (res) => {
+        if (res.msg.success) {
+          setCustomerData(initFormData);
+          setBackendMsg({
+            msg: res.msg.success,
+            status: true,
+          });
 
-    const fetchTicket = async (signal) => {
-        try {
-            const request = await fetch('/ticket', {
-                signal: signal
-            });
-            const res = await request.json();
-
-            setTickets(res.tickets);
-        } catch (error) {
-            if (!signal?.aborted) {
-                console.log(error);
-            }
-        }
-    }
-
-    const submit = async (signal) => {
-
-        try {
-            const request = await fetch('/customer/add', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                signal: signal,
-                body: JSON.stringify(customerData)
-            });
-            const res = await request.json();
-
-            if (res.msg.success) {
-                setCustomerData(initFormData);
-                setBackendMsg({
-                    msg: res.msg.success,
-                    status: true
-                });
-
-                if (props.tablePage.currentPage !== props.tablePage.totalPages - 1) {
-                    props.customersArray.pop();
-                    props.setCustomersArray([res.customer, ...props.customersArray]);
-                } else {
-                    props.setCustomersArray([res.customer, ...props.customersArray]);
-                }
-            }
-
-            if (res.msg.error) {
-                setBackendMsg({
-                    msg: res.msg.error,
-                    status: false
-                });
-            }
-            setIsSubmit(false);
-        } catch (error) {
-            if (!signal?.aborted) {
-                console.log(error);
-            }
-        }
-    }
-
-    useEffect(() => {
-        const abortController = new AbortController();
-        const signal = abortController.signal;
-
-        if (isSubmit) {
-            submit(signal);
+          if (tablePage.currentPage !== tablePage.totalPages - 1) {
+            customersArray.pop();
+            setCustomersArray([res.customer, ...customersArray]);
+          } else {
+            setCustomersArray([res.customer, ...customersArray]);
+          }
         }
 
-        return () => {
-            abortController.abort();
+        if (res.msg.error) {
+          setBackendMsg({
+            msg: res.msg.error,
+            status: false,
+          });
         }
-    }, [isSubmit]);
-
-    useEffect(() => {
-        const abortController = new AbortController();
-        const signal = abortController.signal;
-
-        fetchTicket(signal);
-        fetchDiscount(signal);
-
-        return () => {
-            abortController.abort();
-        }
-    }, []);
-
-    useEffect(() => {
-        if (backendMsg) {
-            const timeOut = setTimeout(() => { setBackendMsg(null) }, 5000);
-            return () => {
-                clearTimeout(timeOut);
-            }
-        }
-    }, [backendMsg]);
-
-    return (
-        <>
-            {backendMsg ? (
-                <div className={backendMsg.status ? styles.form__success : styles.form__error}>{backendMsg.msg}</div>
-            ) : null}
-
-            <form onSubmit={(e) => { e.preventDefault(); setIsSubmit(true) }} className={styles.form}>
-                <input value={customerData.firstName} onChange={e => setCustomerData({ ...customerData, firstName: e.target.value })} placeholder='Imie' className={styles.form__input} type='text' />
-                <input value={customerData.lastName} onChange={e => setCustomerData({ ...customerData, lastName: e.target.value })} placeholder='Nazwisko' className={styles.form__input} type='text' />
-                <input value={customerData.number} onChange={e => setCustomerData({ ...customerData, number: e.target.value })} placeholder='Numer' className={styles.form__input} type='text' />
-                <input value={customerData.code} onChange={e => setCustomerData({ ...customerData, code: e.target.value })} placeholder='Code' className={styles.form__input} type='text' />
-                <select value={customerData.ticketType} onChange={e => setCustomerData({ ...customerData, ticketType: e.target.value })} className={styles.form__select} name='ticket'>
-                    <option>Karnet</option>
-                    {tickets.map(ticket => <option key={ticket.id} value={ticket.id} disabled={!ticket.status}>{`${ticket.name} | ${ticket.activeDays} ${ticket.activeDays === 1 ? 'dzień' : 'dni'} | ${ticket.price}zł`}</option>)}
-                </select>
-                <select value={customerData.discountId} onChange={e => setCustomerData({ ...customerData, discountId: e.target.value })} className={styles.form__select} name='discount'>
-                    <option>Znizka</option>
-                    {discounts.map(discount => <option key={discount.id} value={discount.id} disabled={!discount.status}>{`${discount.name} | ${discount.discount}%`}</option>)}
-                </select>
-                <button className={styles.form__btn}>
-                    Dodaj
-                </button>
-            </form>
-        </>
+        setIsSubmit(false);
+      }
     );
+  };
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    const { signal } = abortController;
+
+    if (isSubmit) {
+      submit(signal);
+    }
+
+    return () => {
+      abortController.abort();
+    };
+  }, [isSubmit]);
+
+  useEffect(() => {
+    if (backendMsg) {
+      const timeOut = setTimeout(() => {
+        setBackendMsg(null);
+      }, 5000);
+      return () => {
+        clearTimeout(timeOut);
+      };
+    }
+
+    return null;
+  }, [backendMsg]);
+
+  return (
+    <>
+      {backendMsg ? (
+        <div
+          className={
+            backendMsg.status ? styles.form__success : styles.form__error
+          }
+        >
+          {backendMsg.msg}
+        </div>
+      ) : null}
+
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          setIsSubmit(true);
+        }}
+        className={`${styles.form} ${styles[stateGlobal.state.theme]}`}
+      >
+        <input
+          value={customerData.firstName}
+          onChange={(e) =>
+            setCustomerData({ ...customerData, firstName: e.target.value })
+          }
+          placeholder="Imie"
+          className={styles.form__input}
+          type="text"
+        />
+        <input
+          value={customerData.lastName}
+          onChange={(e) =>
+            setCustomerData({ ...customerData, lastName: e.target.value })
+          }
+          placeholder="Nazwisko"
+          className={styles.form__input}
+          type="text"
+        />
+        <input
+          value={customerData.number}
+          onChange={(e) =>
+            setCustomerData({ ...customerData, number: e.target.value })
+          }
+          placeholder="Numer"
+          className={styles.form__input}
+          type="text"
+        />
+        <input
+          value={customerData.code}
+          onChange={(e) =>
+            setCustomerData({ ...customerData, code: e.target.value })
+          }
+          placeholder="Code"
+          className={styles.form__input}
+          type="text"
+        />
+        <select
+          value={customerData.ticketType}
+          onChange={(e) =>
+            setCustomerData({ ...customerData, ticketType: e.target.value })
+          }
+          className={styles.form__select}
+          name="ticket"
+        >
+          <option>Karnet</option>
+          {ticketArray.map((ticket) => (
+            <option key={ticket.id} value={ticket.id} disabled={!ticket.status}>
+              {`${ticket.name} | ${ticket.activeDays} ${
+                ticket.activeDays === 1 ? "dzień" : "dni"
+              } | ${ticket.price}zł`}
+            </option>
+          ))}
+        </select>
+        <select
+          value={customerData.discountId}
+          onChange={(e) =>
+            setCustomerData({ ...customerData, discountId: e.target.value })
+          }
+          className={styles.form__select}
+          name="discount"
+        >
+          <option>Znizka</option>
+          {discountArray.map((discount) => (
+            <option
+              key={discount.id}
+              value={discount.id}
+              disabled={!discount.status}
+            >
+              {`${discount.name} | ${discount.discount}%`}
+            </option>
+          ))}
+        </select>
+        <button type="submit" className={styles.form__btn}>
+          Dodaj
+        </button>
+      </form>
+    </>
+  );
 }
+
+AddCustomerForm.propTypes = propTypes;

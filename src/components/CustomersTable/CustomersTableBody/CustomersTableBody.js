@@ -1,9 +1,20 @@
-import styles from './CustomersTableBody.module.css';
+import PropTypes from "prop-types";
+import { useContext } from "react";
+import ReducerContext from "../../../context/Context";
+import styles from "./CustomersTableBody.module.css";
 
-export default function CustomersTableBody(props) {
-    return (
-        <tbody className={styles.body}>
-            {props.children}
-        </tbody>
-    );
+const propTypes = {
+  children: PropTypes.element.isRequired,
+};
+
+export default function CustomersTableBody({ children }) {
+  const stateGlobal = useContext(ReducerContext);
+
+  return (
+    <tbody className={`${styles.body} ${styles[stateGlobal.state.theme]}`}>
+      {children}
+    </tbody>
+  );
 }
+
+CustomersTableBody.propTypes = propTypes;

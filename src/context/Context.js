@@ -1,6 +1,8 @@
-import { createContext } from "react";
+import React from "react";
 
-export const MenuBtnContext = createContext({
-    menuBtnClick: '',
-    setMenuBtnClick: () => { }
+const ReducerContext = React.createContext({
+  state: {},
+  dispatch: () => {},
 });
+
+export default ReducerContext;
