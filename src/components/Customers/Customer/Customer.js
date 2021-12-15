@@ -1,7 +1,8 @@
 import PropTypes from "prop-types";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import EditCustomer from "../../EditCustomer/EditCustomer";
 import styles from "./Customer.module.css";
+import ReducerContext from "../../../context/Context";
 
 const propTypes = {
   id: PropTypes.number.isRequired,
@@ -30,6 +31,7 @@ export default function Customer({
 }) {
   const [showEditCustomer, setShowEditCustomer] = useState(false);
   const fristNameIconRef = useRef(null);
+  const stateGlobal = useContext(ReducerContext);
 
   useEffect(() => {
     const hue = Math.floor(Math.random() * 360);
@@ -42,9 +44,9 @@ export default function Customer({
       onDoubleClick={() => {
         setShowEditCustomer(true);
       }}
-      style={
-        showEditCustomer ? { backgroundColor: "rgb(219, 238, 255)" } : null
-      }
+      className={`${styles.customer} ${styles[stateGlobal.state.theme]} ${
+        showEditCustomer ? styles.editCustomer : null
+      }`}
     >
       {showEditCustomer ? (
         <EditCustomer

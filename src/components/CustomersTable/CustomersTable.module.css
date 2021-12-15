@@ -10,12 +10,12 @@
     width: 100%;
     border-collapse: collapse;
     border-radius: 5px;
-    background-color: white;
+    background-color: var(--bg-color2);
 }
 
 .themeDark
 {
-    background-color: rgb(76, 97, 146);
+    background-color: var(--bg-color3-themeDark);
 }
 
 ::-webkit-scrollbar {

@@ -1,3 +1,38 @@
+.customer
+{
+    height: 50px;
+    transition: 1000ms;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+}
+
+.customer:hover
+{
+    cursor: pointer;
+    background-color: rgb(219, 238, 255);
+}
+
+.themeDark
+{
+    box-shadow: var(--box-shadow-themeDark);
+}
+
+.themeDark:hover{
+    background-color: rgb(47, 76, 155);
+}
+
+.editCustomer
+{
+    background-color: rgb(219, 238, 255);
+}
+
+.themeDark.editCustomer
+{
+    background-color: rgb(47, 76, 155);
+}
+
 .fristName
 {
     display: flex;

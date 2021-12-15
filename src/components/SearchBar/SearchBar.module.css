@@ -5,8 +5,8 @@
 
 .themeDark .search__input
 {
-    background-color: rgb(76, 97, 146);
-    box-shadow: 0 1px 2px 0 rgb(0, 17, 56);
+    background-color: var(--bg-color3-themeDark);
+    box-shadow: var(--box-shadow-themeDark);
     transition: 1000ms;
 }
 
@@ -17,9 +17,9 @@
 
 .themeDark .search__select
 {
-    background-color: rgb(76, 97, 146);
-    border-left: 1px solid rgb(0, 17, 56);
-    border-right: 1px solid rgb(0, 17, 56);
+    background-color: var(--bg-color3-themeDark);
+    border-left: 1px solid var(--bg-color1-themeDark);
+    border-right: 1px solid var(--bg-color1-themeDark);
     transition: 1000ms;
 }
 

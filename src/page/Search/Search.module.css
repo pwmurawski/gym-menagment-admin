@@ -1,16 +1,16 @@
 .pageContainer
 {
-    background-color: white;
+    background-color: var(--bg-color2);
     border-radius: 5px;
-    box-shadow: 0 1px 2px 0 rgb(150, 150, 150);
+    box-shadow: var(--box-shadow);
     margin: 20px 10px 0 5px;
     padding: 10px 15px 30px 30px;
 }
 
 .themeDark
 {
-    background-color: rgb(60, 78, 119);
-    box-shadow: 0 1px 2px 0 rgb(0, 17, 56);
+    background-color: var(--bg-color2-themeDark);
+    box-shadow: var(--box-shadow-themeDark);
     transition: 1000ms;
 }
 
