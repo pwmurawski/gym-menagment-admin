@@ -25,6 +25,7 @@
 
 .search__input
 {
+    background-color: white;
     width: 350px;
     height: 20px;
     font-size: 15px;
@@ -41,6 +42,7 @@
 
 .search__select
 {
+    background-color: white;
     height: 90%;
     padding: 10px;
     font-size: 15px;
@@ -91,7 +93,7 @@
     {
         position: fixed;
         bottom: 65px;
-        z-index: 999 !important;
+        z-index: 99;
     }
 
     .search .search__input

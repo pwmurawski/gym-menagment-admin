@@ -8,7 +8,8 @@
     overflow: hidden;
 }
 
-.customer:hover
+.customer:hover,
+.editCustomer
 {
     cursor: pointer;
     background-color: rgb(219, 238, 255);
@@ -19,15 +20,7 @@
     box-shadow: var(--box-shadow-themeDark);
 }
 
-.themeDark:hover{
-    background-color: rgb(47, 76, 155);
-}
-
-.editCustomer
-{
-    background-color: rgb(219, 238, 255);
-}
-
+.themeDark:hover,
 .themeDark.editCustomer
 {
     background-color: rgb(47, 76, 155);

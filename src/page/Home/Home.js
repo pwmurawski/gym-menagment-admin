@@ -82,7 +82,7 @@ function Home() {
       ) : (
         <div
           className={`${styles.pageContainer} ${
-            styles[stateGlobal.state.theme]
+            styles[stateGlobal.state.theme] ?? ""
           }`}
         >
           <h2>Klienci:</h2>

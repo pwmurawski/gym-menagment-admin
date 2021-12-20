@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
-import "./App.css";
 import { useReducer, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
@@ -17,6 +16,7 @@ import { reducer, initialState } from "./reducer";
 
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  window.localStorage.setItem("theme", state.theme);
   document.body.setAttribute("class", state.theme);
 
   const header = <Header />;

@@ -84,9 +84,11 @@ export default function AddTicketForm({ ticketsArray, setTicketsArray }) {
     <>
       {backendMsg ? (
         <div
-          className={
-            backendMsg.status ? styles.form__success : styles.form__error
-          }
+          className={`${styles.form__msg} ${
+            backendMsg.status
+              ? styles.form__msg_success
+              : styles.form__msg_error
+          }`}
         >
           {backendMsg.msg}
         </div>
@@ -97,7 +99,7 @@ export default function AddTicketForm({ ticketsArray, setTicketsArray }) {
           e.preventDefault();
           setIsSubmit(true);
         }}
-        className={`${styles.form} ${styles[stateGlobal.state.theme]}`}
+        className={`${styles.form} ${styles[stateGlobal.state.theme] ?? ""}`}
       >
         <input
           value={ticketData.name}

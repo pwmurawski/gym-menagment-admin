@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Menu.module.css";
 import imgLogo from "../../../assets/logo.png";
@@ -9,62 +9,31 @@ import imgCustomer from "../../../assets/customer.png";
 import ReducerContext from "../../../context/Context";
 
 export default function Menu() {
-  const menuRef = useRef(null);
   const stateGlobal = useContext(ReducerContext);
   const mediaQuery = window.matchMedia("(max-width: 760px)");
 
-  const mediaMenuHidden = () => {
-    const resizeHandler = () => {
-      if (mediaQuery.matches) {
-        menuRef.current.style.display = "none";
-        menuRef.current.style.width = "";
-      } else {
-        menuRef.current.style.display = "";
-      }
-    };
-
-    window.addEventListener("resize", resizeHandler);
-  };
-
-  useEffect(() => {
-    mediaMenuHidden();
-    return () => {
-      window.removeEventListener("resize");
-    };
-  }, []);
-
-  const menuBtnHandler = () => {
+  const onClickLinkHandler = () => {
     if (mediaQuery.matches) {
-      if (stateGlobal.state.menuBtnClick) {
-        menuRef.current.style.display = "";
-      } else {
-        menuRef.current.style.display = "none";
-      }
-    } else if (stateGlobal.state.menuBtnClick) {
-      menuRef.current.style.width = "270px";
-    } else {
-      menuRef.current.style.width = "";
+      stateGlobal.dispatch({ type: "click-menuBtn" });
     }
   };
 
-  useEffect(() => {
-    menuBtnHandler();
-  }, [stateGlobal.state.menuBtnClick]);
-
   return (
     <div
-      className={`${styles.menu} ${styles[stateGlobal.state.theme]}`}
-      ref={menuRef}
+      className={`${styles.menu} ${
+        stateGlobal.state.menuBtnClick ? styles.menu_openMenu : ""
+      } ${styles[stateGlobal.state.theme] ?? ""}`}
     >
       <div className={styles.menu__logo}>
         <img className={styles.logo__img} src={imgLogo} alt="logo" />
         <h1>Gym</h1>
       </div>
       <ul className={styles.menu__list}>
-        <Link className={styles.link} to="/">
+        <Link className={styles.link} to="/" onClick={onClickLinkHandler}>
           <li
-            className={`${styles.list__item}
-            ${stateGlobal.state.menuBtnClick ? styles.itemListMenuOpen : null}`}
+            className={`${styles.list__item} ${
+              stateGlobal.state.menuBtnClick ? styles.list__item_menuOpen : ""
+            }`}
           >
             <img
               className={styles.item__img}
@@ -74,20 +43,24 @@ export default function Menu() {
             <p className={styles.list__item__text}>Strona główna</p>
           </li>
         </Link>
-        <Link className={styles.link} to="ticket">
+        <Link className={styles.link} to="ticket" onClick={onClickLinkHandler}>
           <li
             className={`${styles.list__item} ${
-              stateGlobal.state.menuBtnClick ? styles.itemListMenuOpen : null
+              stateGlobal.state.menuBtnClick ? styles.list__item_menuOpen : ""
             }`}
           >
             <img className={styles.item__img} src={imgKarnet} alt="ticket" />
             <p className={styles.list__item__text}>Karnet</p>
           </li>
         </Link>
-        <Link className={styles.link} to="discount">
+        <Link
+          className={styles.link}
+          to="discount"
+          onClick={onClickLinkHandler}
+        >
           <li
             className={`${styles.list__item} ${
-              stateGlobal.state.menuBtnClick ? styles.itemListMenuOpen : null
+              stateGlobal.state.menuBtnClick ? styles.list__item_menuOpen : ""
             }`}
           >
             <img className={styles.item__img} src={imgPrice} alt="price" />
@@ -96,7 +69,7 @@ export default function Menu() {
         </Link>
         <li
           className={`${styles.list__item} ${
-            stateGlobal.state.menuBtnClick ? styles.itemListMenuOpen : null
+            stateGlobal.state.menuBtnClick ? styles.list__item_menuOpen : ""
           }`}
         >
           <img className={styles.item__img} src={imgUser} alt="user" />

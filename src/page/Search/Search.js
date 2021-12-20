@@ -84,7 +84,7 @@ export default function Search() {
       ) : (
         <div
           className={`${styles.pageContainer} ${
-            styles[stateGlobal.state.theme]
+            styles[stateGlobal.state.theme] ?? ""
           }`}
         >
           <h2>Wyniki wyszukiwania:</h2>

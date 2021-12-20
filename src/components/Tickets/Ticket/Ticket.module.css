@@ -1,0 +1,27 @@
+.ticket
+{
+    height: 50px;
+    transition: 1000ms;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+}
+
+.ticket:hover,
+.editTicket
+{
+    cursor: pointer;
+    background-color: rgb(219, 238, 255);
+}
+
+.themeDark
+{
+    box-shadow: var(--box-shadow-themeDark);
+}
+
+.themeDark:hover,
+.themeDark.editTicket
+{
+    background-color: rgb(47, 76, 155);
+}

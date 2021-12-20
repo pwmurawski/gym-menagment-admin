@@ -13,7 +13,9 @@ export default function Header() {
   };
 
   return (
-    <div className={`${styles.header} ${styles[stateGlobal.state.theme]}`}>
+    <div
+      className={`${styles.header} ${styles[stateGlobal.state.theme] ?? ""}`}
+    >
       <button
         type="button"
         className={styles.header__Btn}

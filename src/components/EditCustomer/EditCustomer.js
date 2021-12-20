@@ -184,7 +184,7 @@ export default function EditCustomer({
           onClick={() => {
             setIsSubmit(true);
           }}
-          className={styles.form__submitBtn}
+          className={`${styles.form__btn} ${styles.form__btn_submit}`}
         >
           Edytuj
         </button>
@@ -195,7 +195,7 @@ export default function EditCustomer({
           onClick={() => {
             setShowEditCustomer(false);
           }}
-          className={styles.form__deleteBtn}
+          className={`${styles.form__btn} ${styles.form__btn_delete}`}
         >
           Usun
         </button>
@@ -206,7 +206,7 @@ export default function EditCustomer({
           onClick={() => {
             setShowEditCustomer(false);
           }}
-          className={styles.form__exitBtn}
+          className={`${styles.form__btn} ${styles.form__btn_exit}`}
         >
           Wyjdz
         </button>

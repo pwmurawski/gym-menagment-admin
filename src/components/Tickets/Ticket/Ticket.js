@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import styles from "./Ticket.module.css";
+import ReducerContext from "../../../context/Context";
 
 const propTypes = {
   name: PropTypes.string.isRequired,
@@ -10,12 +12,16 @@ const propTypes = {
 
 export default function Ticket({ name, price, activeDays, status }) {
   const [showEditCustomer, setShowEditCustomer] = useState(false);
+  const stateGlobal = useContext(ReducerContext);
 
   return (
     <tr
       onDoubleClick={() => {
         setShowEditCustomer(true);
       }}
+      className={`${styles.ticket} ${styles[stateGlobal.state.theme] ?? ""} ${
+        showEditCustomer ? styles.editTicket : null
+      }`}
     >
       {showEditCustomer ? (
         <>

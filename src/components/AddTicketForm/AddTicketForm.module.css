@@ -15,7 +15,8 @@
     box-shadow: var(--box-shadow-themeDark);
 }
 
-.themeDark .form__input
+.themeDark .form__input,
+.themeDark .form__select
 {
     background-color: rgb(157, 199, 255);
     box-shadow: 0 1px 2px 0 rgb(0, 17, 56);
@@ -26,18 +27,13 @@
     color: black;
 }
 
-.themeDark .form__select
-{
-    background-color: rgb(157, 199, 255);
-    box-shadow: 0 1px 2px 0 rgb(0, 17, 56);
-}
-
 .themeDark .form__btn
 {
     box-shadow: 0 1px 2px 0 rgb(0, 17, 56);
 }
 
-.form__input
+.form__input,
+.form__select
 {
     min-width: 40px;
     height: 30px;
@@ -51,6 +47,7 @@
     cursor: pointer;
     transition: 300ms;
     box-shadow: 0 1px 2px 0 rgb(150, 150, 150);
+    appearance: none;
 }
 
 .form__input:first-child
@@ -58,37 +55,13 @@
     margin-left: 1px;
 }
 
-.form__input:hover
-{
-    background-color: rgb(87, 255, 171);
-}
-
-.form__input:focus
-{
-    outline-color: rgb(87, 255, 171);
-}
-
-.form__select
-{
-    min-width: 40px;
-    height: 30px;
-    margin-right: 5px;
-    border: 0;
-    border-radius: 5px;
-    background-color: rgb(219, 238, 255);
-    text-align: center;
-    flex: 1;
-    cursor: pointer;
-    transition: 300ms;
-    appearance: none;
-    box-shadow: 0 1px 2px 0 rgb(150, 150, 150);
-}
-
+.form__input:hover,
 .form__select:hover
 {
     background-color: rgb(87, 255, 171);
 }
 
+.form__input:focus,
 .form__select:focus
 {
     outline-color: rgb(87, 255, 171);
@@ -112,17 +85,16 @@
     color: whitesmoke;
 }
 
-.form__btn:focus-visible
+.form__btn:focus
 {
     outline-color: rgb(0, 218, 109);
 }
 
-.form__error
+.form__msg
 {
-    background-color: rgb(250, 168, 168);
+    --width: 400px;
     border-radius: 5px;
     text-align: center;
-    --width: 400px;
     padding: 5px;
     box-shadow: 0 1px 2px 0 rgb(0, 17, 56);
     width: var(--width);
@@ -131,29 +103,19 @@
     left: calc(50% - var(--width)/2);
 }
 
-.form__success
+.form__msg_success
 {
     background-color: rgb(168, 250, 209);
-    border-radius: 5px;
-    text-align: center;
-    --width: 400px;
-    padding: 5px;
-    box-shadow: 0 1px 2px 0 rgb(0, 17, 56);
-    width: var(--width);
-    position: absolute;
-    top: 40px;
-    left: calc(50% - var(--width)/2);
+}
+
+.form__msg_error
+{
+    background-color: rgb(250, 168, 168);
 }
 
 @media (max-width: 1393px) {
-    .form__input{
-        font-size: 12px;
-    }
-
-    .form__select{
-        font-size: 12px;
-    }
-
+    .form__input,
+    .form__select,
     .form__btn
     {
         font-size: 12px;
@@ -161,21 +123,17 @@
 }
 
 @media (max-width: 1205px) {
-    .form__input{
-        width: 100px;
-    }
-
-    .form__select{
+    .form__input,
+    .form__select
+    {
         width: 100px;
     }
 }
 
 @media (max-width: 978px) {
-    .form__input{
-        width: 60px;
-    }
-
-    .form__select{
+    .form__input,
+    .form__select
+    {
         width: 60px;
     }
 }

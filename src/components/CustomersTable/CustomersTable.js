@@ -54,7 +54,9 @@ export default function CustomersTable({
         ref={tableScrolRef}
         className={styles.tableScrollContainer}
       >
-        <table className={`${styles.table} ${styles[stateGlobal.state.theme]}`}>
+        <table
+          className={`${styles.table} ${styles[stateGlobal.state.theme] ?? ""}`}
+        >
           {children}
         </table>
       </div>
@@ -62,7 +64,9 @@ export default function CustomersTable({
   }
   return (
     <div ref={tableScrolRef} className={styles.tableScrollContainer}>
-      <table className={`${styles.table} ${styles[stateGlobal.state.theme]}`}>
+      <table
+        className={`${styles.table} ${styles[stateGlobal.state.theme] ?? ""}`}
+      >
         {children}
       </table>
     </div>

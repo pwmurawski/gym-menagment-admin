@@ -15,6 +15,10 @@ export const reducer = (state, action) => {
 };
 
 export const initialState = {
-  theme: "",
+  theme:
+    window.localStorage.getItem("theme") ??
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "themeDark"
+      : "",
   menuBtnClick: false,
 };

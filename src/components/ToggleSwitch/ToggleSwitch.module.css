@@ -27,6 +27,16 @@
     transition: 500ms;
 }
 
+.toggleSwitch_dark
+{
+    background-color: rgb(252, 255, 92);
+}
+
+.toggleSwitch__switch_dark
+{
+    transform: translateX(108%);
+}
+
 .toggleSwitch__imgDark
 {
     width: 23px;

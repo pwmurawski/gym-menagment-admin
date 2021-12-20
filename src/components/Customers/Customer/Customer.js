@@ -44,8 +44,8 @@ export default function Customer({
       onDoubleClick={() => {
         setShowEditCustomer(true);
       }}
-      className={`${styles.customer} ${styles[stateGlobal.state.theme]} ${
-        showEditCustomer ? styles.editCustomer : null
+      className={`${styles.customer} ${styles[stateGlobal.state.theme] ?? ""} ${
+        showEditCustomer ? styles.editCustomer : ""
       }`}
     >
       {showEditCustomer ? (

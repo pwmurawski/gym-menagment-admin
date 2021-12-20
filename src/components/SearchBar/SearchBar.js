@@ -77,7 +77,9 @@ export default function SearchBar() {
             e.preventDefault();
             setIsSubmit(!isSubmit);
           }}
-          className={`${styles.search} ${styles[stateGlobal.state.theme]}`}
+          className={`${styles.search} ${
+            styles[stateGlobal.state.theme] ?? ""
+          }`}
         >
           <input
             onChange={(e) =>

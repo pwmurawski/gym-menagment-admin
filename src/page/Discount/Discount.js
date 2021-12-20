@@ -43,7 +43,7 @@ export default function Discount() {
       ) : (
         <div
           className={`${styles.pageContainer} ${
-            styles[stateGlobal.state.theme]
+            styles[stateGlobal.state.theme] ?? ""
           }`}
         >
           <h2>Znizki:</h2>
