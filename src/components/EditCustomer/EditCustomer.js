@@ -3,6 +3,9 @@ import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import FetchApi from "../../helpers/fetchApi";
 import styles from "./EditCustomer.module.css";
+import ImgEdit from "../../assets/edit.png";
+import ImgDelete from "../../assets/delete.png";
+import ImgExit from "../../assets/exit.png";
 
 const propTypes = {
   id: PropTypes.number.isRequired,
@@ -184,9 +187,10 @@ export default function EditCustomer({
           onClick={() => {
             setIsSubmit(true);
           }}
-          className={`${styles.form__btn} ${styles.form__btn_submit}`}
+          className={`${styles.form__btn} ${styles.form__btn_edit}`}
         >
-          Edytuj
+          <img className={styles.form__btn__icon} src={ImgEdit} alt="edit" />
+          <p className={styles.tooltip}>Zapisz</p>
         </button>
       </td>
       <td>
@@ -197,7 +201,8 @@ export default function EditCustomer({
           }}
           className={`${styles.form__btn} ${styles.form__btn_delete}`}
         >
-          Usun
+          <img className={styles.form__btn__icon} src={ImgDelete} alt="edit" />
+          <p className={styles.tooltip}>Usuń</p>
         </button>
       </td>
       <td>
@@ -208,7 +213,8 @@ export default function EditCustomer({
           }}
           className={`${styles.form__btn} ${styles.form__btn_exit}`}
         >
-          Wyjdz
+          <img className={styles.form__btn__icon} src={ImgExit} alt="edit" />
+          <p className={styles.tooltip}>Wyjdz</p>
         </button>
       </td>
     </>

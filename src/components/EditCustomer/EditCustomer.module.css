@@ -28,59 +28,66 @@
 
 .form__btn
 {
-    width: 100%;
-    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 40px;
+    height: 40px;
     border: 0;
     border-radius: 5px;
     cursor: pointer;
     transition: 300ms;
+    border-radius: 150px;
+    box-shadow: 0 1px 2px 0 rgb(0, 17, 56);
+    position: relative;
 }
 
-.form__btn_submit
+.form__btn_edit
 {
-    background-color: rgb(87, 255, 171);
+    background-color: greenyellow;
 }
-
-.form__btn_submit:hover
-{
-    background-color: rgb(0, 218, 109);
-    color: whitesmoke;
-}
-
-.form__btn_submit:focus
-{
-    outline-color: rgb(0, 218, 109);
-}
-
-.form__btn_exit
-{
-    background-color: rgb(255, 104, 104);
-}
-
-.form__btn_exit:hover
-{
-    background-color: rgb(221, 0, 0);
-    color: whitesmoke;
-}
-
-.form__btn_exit:focus
-{
-    outline-color: rgb(221, 0, 0);
-}
-
 .form__btn_delete
 {
-    background-color: rgb(247, 255, 134);
+    background-color: yellow;
+}
+.form__btn_exit
+{
+    background-color: red;
 }
 
-.form__btn_delete:hover
+.form__btn_edit:hover,
+.form__btn_delete:hover,
+.form__btn_exit:hover
 {
-    background-color: rgb(200, 214, 0);
+    transform: scale(1.2);
+    z-index: 1;
 }
 
-.form__btn_delete:focus
+.form__btn_edit:hover .tooltip,
+.form__btn_delete:hover .tooltip,
+.form__btn_exit:hover .tooltip
 {
-    outline-color: rgb(200, 214, 0);
+    visibility: visible;
+    opacity: 1;
+}
+
+.tooltip
+{
+    --width: fit-content;
+    position: absolute;
+    top: -30px;
+    left: calc(50% - var(--width)/2);
+    width: var(--width);
+    background-color: rgb(60, 78, 119);
+    box-shadow: 0 1px 2px 0 rgb(0, 17, 56);
+    border-radius: 20px;
+    padding: 1px 5px;
+    color: white;
+    font-size: 10px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 1000ms cubic-bezier(1, 0, 0, 0);
 }
 
 @media (max-width: 1153px) {
@@ -105,5 +112,17 @@
     .form__select
     {
         font-size: 10px;
+    }
+    
+    .form__btn
+    {
+        width: 30px;
+        height: 30px;
+    }
+
+    .form__btn__icon
+    {
+        width: 16px;
+        height: 16px;
     }
 }

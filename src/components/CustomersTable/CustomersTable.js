@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useRef } from "react";
 import ReducerContext from "../../context/Context";
 import styles from "./CustomersTable.module.css";
 
@@ -28,10 +28,6 @@ export default function CustomersTable({
   const tableScrolRef = useRef(null);
   const stateGlobal = useContext(ReducerContext);
 
-  useEffect(() => {
-    tableScrolRef.current.style.maxHeight = size;
-  }, []);
-
   if (pagination) {
     const scrollHandler = () => {
       const scrollBarPosition = tableScrolRef.current.scrollTop;
@@ -53,6 +49,7 @@ export default function CustomersTable({
         onScroll={scrollHandler}
         ref={tableScrolRef}
         className={styles.tableScrollContainer}
+        style={{ maxHeight: size }}
       >
         <table
           className={`${styles.table} ${styles[stateGlobal.state.theme] ?? ""}`}
@@ -62,8 +59,13 @@ export default function CustomersTable({
       </div>
     );
   }
+
   return (
-    <div ref={tableScrolRef} className={styles.tableScrollContainer}>
+    <div
+      ref={tableScrolRef}
+      className={styles.tableScrollContainer}
+      style={{ maxHeight: size }}
+    >
       <table
         className={`${styles.table} ${styles[stateGlobal.state.theme] ?? ""}`}
       >

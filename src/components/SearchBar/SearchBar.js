@@ -17,11 +17,11 @@ export default function SearchBar() {
   const navigate = useNavigate();
 
   const search = async () => {
-    navigate(
-      `/wyszukaj/${formData.search === "" ? "=" : formData.search}${
-        formData.searchFor
-      }`
-    );
+    if (!(formData.search === "")) {
+      navigate(`/wyszukaj/${formData.search}${formData.searchFor}`);
+    } else {
+      navigate("/");
+    }
   };
 
   const searchBtnHandler = () => {

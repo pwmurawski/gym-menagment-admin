@@ -1,4 +1,4 @@
-import { memo, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styles from "./Home.module.css";
 import CustomersTable from "../../components/CustomersTable/CustomersTable";
 import CustomersTableHead from "../../components/CustomersTable/CustomersTableHead/CustomersTableHead";
@@ -9,7 +9,7 @@ import AddCustomerForm from "../../components/AddCustomer/AddCustomerForm";
 import FetchApi from "../../helpers/fetchApi";
 import ReducerContext from "../../context/Context";
 
-function Home() {
+export default function Home() {
   const [loading, setLoading] = useState(true);
   const [tablePage, setTablePage] = useState({
     currentPage: 0,
@@ -122,5 +122,3 @@ function Home() {
     </div>
   );
 }
-
-export default memo(Home);

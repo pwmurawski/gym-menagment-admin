@@ -1,5 +1,4 @@
-/* eslint-disable react/jsx-no-constructed-context-values */
-import { useReducer, Suspense } from "react";
+import { useReducer, Suspense, useMemo } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
 import Header from "./components/Layout/Header/Header";
@@ -16,6 +15,7 @@ import { reducer, initialState } from "./reducer";
 
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const stateMemo = useMemo(() => ({ state, dispatch }), [state]);
   window.localStorage.setItem("theme", state.theme);
   document.body.setAttribute("class", state.theme);
 
@@ -39,7 +39,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <ReducerContext.Provider value={{ state, dispatch }}>
+      <ReducerContext.Provider value={stateMemo}>
         <Layout header={header} menu={menu} content={content} footer={footer} />
       </ReducerContext.Provider>
     </BrowserRouter>

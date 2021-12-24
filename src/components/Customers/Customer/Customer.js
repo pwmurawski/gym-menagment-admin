@@ -65,7 +65,7 @@ export default function Customer({
       ) : (
         <>
           <td className={`${styles.fristName} ${styles.customerItem}`}>
-            <div className={styles.tooltip}>Kliknij 2 razy aby edytowac</div>
+            <p className={styles.tooltip}>Kliknij 2 razy aby edytowac</p>
             <div className={styles.fristName__containerIcon}>
               <div
                 ref={fristNameIconRef}
@@ -75,23 +75,29 @@ export default function Customer({
             <p className={styles.firstName__text}>{firstName}</p>
           </td>
           <td className={styles.customerItem}>
-            <div className={styles.tooltip}>Kliknij 2 razy aby edytowac</div>
+            <p className={styles.tooltip}>Kliknij 2 razy aby edytowac</p>
             {lastName}
           </td>
           <td className={styles.customerItem}>
-            <div className={styles.tooltip}>Kliknij 2 razy aby edytowac</div>
+            <p className={styles.tooltip}>Kliknij 2 razy aby edytowac</p>
             {number}
           </td>
           <td className={styles.customerItem}>
-            <div className={styles.tooltip}>Kliknij 2 razy aby edytowac</div>
-            {`${ticket.name} | Cena:${ticket.finalPrice} zł`}
+            <p className={styles.tooltip}>Kliknij 2 razy aby edytowac</p>
+            <p className={styles.customerItem__text}>{ticket.name}</p>
+            <p
+              className={styles.customerItem__text}
+            >{`Cena:${ticket.finalPrice} zł`}</p>
           </td>
           <td className={styles.customerItem}>
-            <div className={styles.tooltip}>Kliknij 2 razy aby edytowac</div>
-            {`${discount.name} | ${discount.discount}%`}
+            <p className={styles.tooltip}>Kliknij 2 razy aby edytowac</p>
+            <p className={styles.customerItem__text}>{discount.name}</p>
+            <p
+              className={styles.customerItem__text}
+            >{`${discount.discount}%`}</p>
           </td>
           <td className={styles.customerItem}>
-            <div className={styles.tooltip}>Kliknij 2 razy aby edytowac</div>
+            <p className={styles.tooltip}>Kliknij 2 razy aby edytowac</p>
             {ticket.dateTo}
           </td>
         </>

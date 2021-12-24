@@ -52,6 +52,7 @@
         bottom: 0;
         width: 100%;
         justify-content: space-evenly;
+        z-index: 2;
     }
 
     .header__Btn:active

@@ -73,7 +73,7 @@
 {
     --width: 150px;
     position: absolute;
-    top: -10px;
+    top: -25px;
     left: calc(50% - var(--width)/2);
     width: var(--width);
     background-color: rgb(60, 78, 119);
@@ -83,7 +83,12 @@
     font-size: 12px;
     visibility: hidden;
     opacity: 0;
-    transition: opacity 2000ms cubic-bezier(1, 0, 0, 0);
+    transition: opacity 1500ms cubic-bezier(1, 0, 0, 0);
+}
+
+.customerItem__text
+{
+    margin: 0;
 }
 
 @media (max-width: 760px) {
