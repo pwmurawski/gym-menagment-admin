@@ -5,7 +5,7 @@ import CustomersTableHead from "../../components/CustomersTable/CustomersTableHe
 import CustomersTableBody from "../../components/CustomersTable/CustomersTableBody/CustomersTableBody";
 import Tickets from "../../components/Tickets/Tickets";
 import LoadingIcon from "../../components/UI/LoadingIcon/LoadingIcon";
-import AddTicketForm from "../../components/AddTicketForm/AddTicketForm";
+import AddTicketForm from "../../components/Tickets/AddTicketForm/AddTicketForm";
 import ReducerContext from "../../context/Context";
 import FetchApi from "../../helpers/fetchApi";
 
@@ -22,7 +22,9 @@ export default function Ticket() {
       },
       (res) => {
         setTicketsArray(res.tickets);
-        setLoading(false);
+        if (res.tickets) {
+          setLoading(false);
+        }
       }
     );
   };
@@ -30,7 +32,9 @@ export default function Ticket() {
   useEffect(() => {
     const abortController = new AbortController();
     const { signal } = abortController;
+
     fetchTickets(signal);
+
     return () => {
       abortController.abort();
     };
@@ -63,6 +67,9 @@ export default function Ticket() {
               />
             </CustomersTableBody>
           </CustomersTable>
+          {ticketsArray.length === 0 ? (
+            <h3 className={styles.messageEmptyCustomers}>Brak karnetów</h3>
+          ) : null}
         </div>
       )}
     </div>

@@ -22,7 +22,8 @@
     fill: white;
     width: 70px;
     height: 100%;
-    transition: 300ms;
+    transition: background-color 300ms;
+    cursor: pointer;
 }
 
 .themeDark .header__Btn
@@ -34,7 +35,6 @@
     .header__Btn:hover
     {
         background-color: rgb(67, 146, 250);
-        cursor: pointer;
     }
 
     .header__Btn:focus-visible

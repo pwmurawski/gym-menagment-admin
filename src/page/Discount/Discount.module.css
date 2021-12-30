@@ -7,11 +7,15 @@
     padding: 10px 15px 30px 30px;
 }
 
+.messageEmptyCustomers
+{
+    text-align: center;
+}
+
 .themeDark
 {
     background-color: var(--bg-color2-themeDark);
     box-shadow: var(--box-shadow-themeDark);
-    transition: 1000ms;
 }
 
 @media (max-width: 760px) {

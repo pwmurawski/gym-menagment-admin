@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import { useContext, useEffect, useState } from "react";
-import ReducerContext from "../../context/Context";
+import ReducerContext from "../../../context/Context";
 import styles from "./AddTicketForm.module.css";
-import FetchApi from "../../helpers/fetchApi";
+import FetchApi from "../../../helpers/fetchApi";
 
 const propTypes = {
   ticketsArray: PropTypes.array.isRequired,
@@ -14,6 +14,7 @@ export default function AddTicketForm({ ticketsArray, setTicketsArray }) {
     name: "",
     price: "",
     activeDays: "",
+    status: false,
   };
 
   const [ticketData, setTicketData] = useState(initFormData);
@@ -128,6 +129,19 @@ export default function AddTicketForm({ ticketsArray, setTicketsArray }) {
           className={styles.form__input}
           type="text"
         />
+        <p className={styles.status__text}>Status</p>
+        <label className={styles.form__switch} htmlFor="toggleSwitch">
+          <input
+            checked={ticketData.status}
+            onChange={(e) =>
+              setTicketData({ ...ticketData, status: e.target.checked })
+            }
+            className={styles.form__checkbox}
+            type="checkbox"
+            name="toggleSwitch"
+          />
+          <span className={styles.form__slider} />
+        </label>
         <button type="submit" className={styles.form__btn}>
           Dodaj
         </button>

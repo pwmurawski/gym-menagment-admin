@@ -7,7 +7,6 @@
 {
     background-color: var(--bg-color3-themeDark);
     box-shadow: var(--box-shadow-themeDark);
-    transition: 1000ms;
 }
 
 .themeDark .search__input::placeholder
@@ -20,7 +19,6 @@
     background-color: var(--bg-color3-themeDark);
     border-left: 1px solid var(--bg-color1-themeDark);
     border-right: 1px solid var(--bg-color1-themeDark);
-    transition: 1000ms;
 }
 
 .search__input
@@ -73,7 +71,7 @@
     right: 0;
     border: 0;
     background: transparent;
-    transition: 300ms;
+    transition: scale 300ms;
 }
 
 .search__btn:hover

@@ -30,7 +30,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/ticket" element={<Ticket />} />
         <Route path="/discount" element={<Discount />} />
-        <Route path="/wyszukaj/:term/*" element={<Search />} />
+        <Route path="/wyszukaj/:term" element={<Search />} />
       </Routes>
     </Suspense>
   );

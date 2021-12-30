@@ -21,5 +21,4 @@ body {
 body.themeDark
 {
     background-color: var(--bg-color1-themeDark);
-    transition: 1000ms;
 }

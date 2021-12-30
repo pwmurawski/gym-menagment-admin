@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import { useState, useEffect, useContext } from "react";
 import styles from "./AddCustomerForm.module.css";
-import ReducerContext from "../../context/Context";
-import FetchApi from "../../helpers/fetchApi";
+import ReducerContext from "../../../context/Context";
+import FetchApi from "../../../helpers/fetchApi";
 
 const propTypes = {
   tablePage: PropTypes.object.isRequired,

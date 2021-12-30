@@ -1,17 +1,17 @@
 .discount
 {
     height: 50px;
-    transition: 1000ms;
+    transition: background-color 1000ms;
     text-align: center;
     border-radius: 5px;
     box-shadow: var(--box-shadow);
     overflow: hidden;
+    cursor: pointer;
 }
 
 .discount:hover,
 .editDiscount
 {
-    cursor: pointer;
     background-color: rgb(219, 238, 255);
 }
 
@@ -24,4 +24,38 @@
 .themeDark.editDiscount
 {
     background-color: rgb(47, 76, 155);
+}
+
+.container__discountStatus
+{
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+}
+
+.discount__status
+{
+    display: flex;
+    justify-self: center;
+    border-radius: 150px;
+    width: 25px;
+    height: 25px;
+    box-shadow: inset var(--box-shadow);
+}
+
+.themeDark .discount__status
+{
+    box-shadow: inset var(--box-shadow-themeDark);   
+}
+
+.discount__status_active
+{
+    background-color: rgb(87, 255, 171);
+}
+
+.discount__status_notActive
+{
+    background-color: lightgray;
 }

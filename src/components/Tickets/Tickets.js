@@ -12,12 +12,13 @@ export default function Tickets({ ticketsArray, setTicketsArray }) {
       {ticketsArray.map((ticket) => (
         <Ticket
           key={ticket.id}
-          ticketsArray={ticketsArray}
-          setTicketsArray={setTicketsArray}
+          id={ticket.id}
           name={ticket.name}
           price={ticket.price}
           activeDays={ticket.activeDays}
           status={ticket.status}
+          ticketsArray={ticketsArray}
+          setTicketsArray={setTicketsArray}
         />
       ))}
     </>

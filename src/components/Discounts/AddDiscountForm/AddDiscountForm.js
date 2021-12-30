@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import { useContext, useEffect, useState } from "react";
 import styles from "./AddDiscountForm.module.css";
-import ReducerContext from "../../context/Context";
-import FetchApi from "../../helpers/fetchApi";
+import ReducerContext from "../../../context/Context";
+import FetchApi from "../../../helpers/fetchApi";
 
 const propTypes = {
   discountsArray: PropTypes.array.isRequired,
@@ -13,7 +13,7 @@ export default function AddDiscountForm({ discountsArray, setDiscountsArray }) {
   const initFormData = {
     name: "",
     discount: "",
-    status: "",
+    status: false,
   };
 
   const [discountData, setDiscountData] = useState(initFormData);
@@ -119,15 +119,20 @@ export default function AddDiscountForm({ discountsArray, setDiscountsArray }) {
           className={styles.form__input}
           type="text"
         />
-        <input
-          value={discountData.status}
-          onChange={(e) =>
-            setDiscountData({ ...discountData, status: e.target.value })
-          }
-          placeholder="Status"
-          className={styles.form__input}
-          type="text"
-        />
+        <p className={styles.status__text}>Status</p>
+        <label className={styles.form__switch} htmlFor="toggleSwitch">
+          <input
+            checked={discountData.status}
+            onChange={(e) =>
+              setDiscountData({ ...discountData, status: e.target.checked })
+            }
+            className={styles.form__checkbox}
+            type="checkbox"
+            name="toggleSwitch"
+          />
+          <span className={styles.form__slider} />
+        </label>
+
         <button type="submit" className={styles.form__btn}>
           Dodaj
         </button>

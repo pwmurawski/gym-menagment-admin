@@ -16,7 +16,8 @@
 }
 
 .themeDark .form__input,
-.themeDark .form__select
+.themeDark .form__select,
+.themeDark .form__switch
 {
     background-color: rgb(157, 199, 255);
     box-shadow: 0 1px 2px 0 rgb(0, 17, 56);
@@ -45,7 +46,7 @@
     text-align: center;
     flex: 1;
     cursor: pointer;
-    transition: 300ms;
+    transition: background-color 300ms;
     box-shadow: 0 1px 2px 0 rgb(150, 150, 150);
     appearance: none;
 }
@@ -75,7 +76,7 @@
     border-radius: 20px;
     background-color: rgb(87, 255, 171);
     cursor: pointer;
-    transition: 300ms;
+    transition: background-color 300ms, color 300ms;
     box-shadow: 0 1px 2px 0 rgb(150, 150, 150);
 }
 
@@ -113,10 +114,53 @@
     background-color: rgb(250, 168, 168);
 }
 
+.form__checkbox
+{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    background: transparent;
+    appearance: none;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.form__switch
+{
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 40px;
+    height: 20px;
+    margin-left: 5px;
+    margin-right: 10px;
+    background-color: rgb(219, 238, 255);
+    border-radius: 30px;
+    padding: 1px;
+    box-shadow: 0 1px 2px 0 rgb(150, 150, 150);
+}
+
+.form__slider
+{
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: lightgray;
+    border-radius: 150px;
+    box-shadow: 0 1px 2px 0 rgb(150, 150, 150);
+}
+
+.form__checkbox:checked + .form__slider
+{
+    transform: translateX(106%);
+    background-color: rgb(87, 255, 171);
+}
+
 @media (max-width: 1393px) {
     .form__input,
     .form__select,
-    .form__btn
+    .form__btn,
+    .status__text
     {
         font-size: 12px;
     }
@@ -142,5 +186,22 @@
     .form
     {
         margin: 0 4px 10px 0;
+    }
+
+    .form__msg
+    {
+        --width: 200px;
+    }
+
+    .form__switch
+    {
+        width: 48px;
+        height: 23px;
+    }
+
+    .form__slider
+    {
+       width: 23px;
+       height: 23px;
     }
 }

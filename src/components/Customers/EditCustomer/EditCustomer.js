@@ -1,11 +1,11 @@
 /* eslint-disable no-param-reassign */
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
-import FetchApi from "../../helpers/fetchApi";
+import FetchApi from "../../../helpers/fetchApi";
 import styles from "./EditCustomer.module.css";
-import ImgEdit from "../../assets/edit.png";
-import ImgDelete from "../../assets/delete.png";
-import ImgExit from "../../assets/exit.png";
+import ImgEdit from "../../../assets/edit.png";
+import ImgDelete from "../../../assets/delete.png";
+import ImgExit from "../../../assets/exit.png";
 
 const propTypes = {
   id: PropTypes.number.isRequired,
@@ -35,6 +35,7 @@ export default function EditCustomer({
   ticketArray,
 }) {
   const [isSubmit, setIsSubmit] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
   const [customerData, setCustomerData] = useState({
     firstName,
     lastName,
@@ -48,7 +49,7 @@ export default function EditCustomer({
     FetchApi(
       `/customer/${id}`,
       {
-        method: "put",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -75,6 +76,29 @@ export default function EditCustomer({
     );
   };
 
+  const deleteCustomer = (signal) => {
+    FetchApi(
+      `/customer/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        signal,
+      },
+      (res) => {
+        if (res.msg.success) {
+          const newCustomersArray = customersArray.filter(
+            (customer) => customer.id !== id
+          );
+          setCustomersArray(newCustomersArray);
+        }
+        setShowEditCustomer(false);
+        setIsDelete(true);
+      }
+    );
+  };
+
   useEffect(() => {
     const abortController = new AbortController();
     const { signal } = abortController;
@@ -88,9 +112,22 @@ export default function EditCustomer({
     };
   }, [isSubmit]);
 
+  useEffect(() => {
+    const abortController = new AbortController();
+    const { signal } = abortController;
+
+    if (isDelete) {
+      deleteCustomer(signal);
+    }
+
+    return () => {
+      abortController.abort();
+    };
+  }, [isDelete]);
+
   return (
     <>
-      <td>
+      <td className={styles.form__item}>
         <input
           value={customerData.firstName}
           onChange={(e) =>
@@ -101,7 +138,7 @@ export default function EditCustomer({
           type="text"
         />
       </td>
-      <td>
+      <td className={styles.form__item}>
         <input
           value={customerData.lastName}
           onChange={(e) =>
@@ -112,7 +149,7 @@ export default function EditCustomer({
           type="text"
         />
       </td>
-      <td>
+      <td className={styles.form__item}>
         <input
           value={customerData.number}
           onChange={(e) =>
@@ -123,7 +160,7 @@ export default function EditCustomer({
           type="text"
         />
       </td>
-      <td>
+      <td className={styles.form__item}>
         <input
           value={customerData.code}
           onChange={(e) =>
@@ -134,7 +171,7 @@ export default function EditCustomer({
           type="text"
         />
       </td>
-      <td>
+      <td className={styles.form__item}>
         <select
           value={customerData.ticketType}
           onChange={(e) =>
@@ -159,7 +196,7 @@ export default function EditCustomer({
           ))}
         </select>
       </td>
-      <td>
+      <td className={styles.form__item}>
         <select
           value={customerData.discountId}
           onChange={(e) =>
@@ -181,7 +218,7 @@ export default function EditCustomer({
           ))}
         </select>
       </td>
-      <td>
+      <td className={styles.form__item}>
         <button
           type="submit"
           onClick={() => {
@@ -193,11 +230,11 @@ export default function EditCustomer({
           <p className={styles.tooltip}>Zapisz</p>
         </button>
       </td>
-      <td>
+      <td className={styles.form__item}>
         <button
           type="button"
           onClick={() => {
-            setShowEditCustomer(false);
+            setIsDelete(true);
           }}
           className={`${styles.form__btn} ${styles.form__btn_delete}`}
         >
@@ -205,7 +242,7 @@ export default function EditCustomer({
           <p className={styles.tooltip}>Usuń</p>
         </button>
       </td>
-      <td>
+      <td className={styles.form__item}>
         <button
           type="button"
           onClick={() => {

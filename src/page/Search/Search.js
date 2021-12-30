@@ -108,6 +108,9 @@ export default function Search() {
               />
             </CustomersTableBody>
           </CustomersTable>
+          {customersArray.length === 0 ? (
+            <h3 className={styles.messageEmptySearch}>Brak wyników</h3>
+          ) : null}
         </div>
       )}
     </div>

@@ -12,11 +12,12 @@ export default function Discounts({ discountsArray, setDiscountsArray }) {
       {discountsArray.map((discount) => (
         <Discount
           key={discount.id}
-          discountsArray={discountsArray}
-          setDiscountsArray={setDiscountsArray}
+          id={discount.id}
           name={discount.name}
           discount={discount.discount}
           status={discount.status}
+          discountsArray={discountsArray}
+          setDiscountsArray={setDiscountsArray}
         />
       ))}
     </>

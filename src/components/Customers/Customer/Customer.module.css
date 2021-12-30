@@ -1,11 +1,11 @@
 .customer
 {
     height: 50px;
-    transition: 1000ms;
-    text-align: center;
+    transition: background-color 1000ms;
     border-radius: 5px;
     box-shadow: var(--box-shadow);
     overflow: hidden;
+    text-align: center;
 }
 
 .customer:hover,
@@ -26,14 +26,14 @@
     background-color: rgb(47, 76, 155);
 }
 
-.fristName
+.name
 {
     display: flex;
     align-items: center;
     height: 50px;
 }
 
-.fristName__icon
+.name__icon
 {
     display: flex;
     align-items: center;
@@ -41,21 +41,26 @@
     border-radius: 150px;
     background-color: greenyellow;
     box-shadow: 0 1px 2px 0 rgb(0, 17, 56);
-    margin-left: 5px;
+    margin: 0 2px 0 5px;
     width: 40px;
     height: 40px;
     font-size: 13px;
     font-weight: bold;
 }
 
-.fristName__containerIcon
+.name__containerIcon
 {
-    flex: 1;
+    width: fit-content;
 }
 
-.firstName__text
+.name__containerText
 {
-    flex: 5;
+    width: 100%;
+}
+
+.name__text
+{
+    margin: 0;
 }
 
 .customerItem
@@ -92,7 +97,7 @@
 }
 
 @media (max-width: 760px) {
-    .fristName__icon
+    .name__icon
     {
         width: 30px;
         height: 30px;

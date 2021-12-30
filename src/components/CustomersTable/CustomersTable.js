@@ -30,9 +30,10 @@ export default function CustomersTable({
 
   if (pagination) {
     const scrollHandler = () => {
-      const scrollBarPosition = tableScrolRef.current.scrollTop;
-      const positionSetTablePage =
-        tableScrolRef.current.scrollHeight - tableScrolRef.current.clientHeight;
+      const scrollBarPosition = Math.floor(tableScrolRef.current.scrollTop);
+      const positionSetTablePage = Math.floor(
+        tableScrolRef.current.scrollHeight - tableScrolRef.current.clientHeight
+      );
 
       for (let i = 0; i < tablePage.totalPages - 1; i += 1) {
         if (

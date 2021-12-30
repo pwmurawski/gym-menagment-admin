@@ -13,7 +13,7 @@
     box-shadow: inset 1px 1px 2px 0 rgb(150, 150, 150);
     cursor: pointer;
     position: relative;
-    transition: 1500ms;
+    transition: transform 1500ms;
 }
 
 .toggleSwitch__switch
@@ -24,7 +24,7 @@
     height: 23px;
     border-radius: 150px;
     z-index: 1;
-    transition: 500ms;
+    transition: transform 500ms;
 }
 
 .toggleSwitch_dark

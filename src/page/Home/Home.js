@@ -5,7 +5,7 @@ import CustomersTableHead from "../../components/CustomersTable/CustomersTableHe
 import CustomersTableBody from "../../components/CustomersTable/CustomersTableBody/CustomersTableBody";
 import Customers from "../../components/Customers/Customers";
 import LoadingIcon from "../../components/UI/LoadingIcon/LoadingIcon";
-import AddCustomerForm from "../../components/AddCustomer/AddCustomerForm";
+import AddCustomerForm from "../../components/Customers/AddCustomer/AddCustomerForm";
 import FetchApi from "../../helpers/fetchApi";
 import ReducerContext from "../../context/Context";
 
@@ -99,14 +99,7 @@ export default function Home() {
             setTablePage={setTablePage}
           >
             <CustomersTableHead
-              headers={[
-                "Imie",
-                "Nazwisko",
-                "Numer",
-                "Karnet",
-                "Znizka",
-                "Data",
-              ]}
+              headers={["Imie i Nazwisko", "Numer", "Karnet", "Znizka", "Data"]}
             />
             <CustomersTableBody>
               <Customers
@@ -117,6 +110,9 @@ export default function Home() {
               />
             </CustomersTableBody>
           </CustomersTable>
+          {customersArray.length === 0 ? (
+            <h3 className={styles.messageEmptyCustomers}>Brak klientów</h3>
+          ) : null}
         </div>
       )}
     </div>

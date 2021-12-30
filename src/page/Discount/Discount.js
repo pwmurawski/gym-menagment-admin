@@ -5,7 +5,7 @@ import CustomersTableHead from "../../components/CustomersTable/CustomersTableHe
 import CustomersTableBody from "../../components/CustomersTable/CustomersTableBody/CustomersTableBody";
 import LoadingIcon from "../../components/UI/LoadingIcon/LoadingIcon";
 import Discounts from "../../components/Discounts/Discounts";
-import AddDiscountForm from "../../components/AddDiscountForm/AddDiscountForm";
+import AddDiscountForm from "../../components/Discounts/AddDiscountForm/AddDiscountForm";
 import ReducerContext from "../../context/Context";
 import FetchApi from "../../helpers/fetchApi";
 
@@ -22,7 +22,9 @@ export default function Discount() {
       },
       (res) => {
         setDiscountsArray(res.discounts);
-        setLoading(false);
+        if (res.discounts) {
+          setLoading(false);
+        }
       }
     );
   };
@@ -30,7 +32,9 @@ export default function Discount() {
   useEffect(() => {
     const abortController = new AbortController();
     const { signal } = abortController;
+
     fetchDiscounts(signal);
+
     return () => {
       abortController.abort();
     };
@@ -61,6 +65,9 @@ export default function Discount() {
               />
             </CustomersTableBody>
           </CustomersTable>
+          {discountsArray.length === 0 ? (
+            <h3 className={styles.messageEmptyCustomers}>Brak zniżek</h3>
+          ) : null}
         </div>
       )}
     </div>

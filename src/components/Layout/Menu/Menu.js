@@ -26,15 +26,11 @@ export default function Menu() {
     >
       <div className={styles.menu__logo}>
         <img className={styles.logo__img} src={imgLogo} alt="logo" />
-        <h1>Gym</h1>
+        <h1 className={styles.logo__title}>Gym</h1>
       </div>
       <ul className={styles.menu__list}>
         <Link className={styles.link} to="/" onClick={onClickLinkHandler}>
-          <li
-            className={`${styles.list__item} ${
-              stateGlobal.state.menuBtnClick ? styles.list__item_menuOpen : ""
-            }`}
-          >
+          <li className={styles.list__item}>
             <img
               className={styles.item__img}
               src={imgCustomer}
@@ -44,11 +40,7 @@ export default function Menu() {
           </li>
         </Link>
         <Link className={styles.link} to="ticket" onClick={onClickLinkHandler}>
-          <li
-            className={`${styles.list__item} ${
-              stateGlobal.state.menuBtnClick ? styles.list__item_menuOpen : ""
-            }`}
-          >
+          <li className={styles.list__item}>
             <img className={styles.item__img} src={imgKarnet} alt="ticket" />
             <p className={styles.list__item__text}>Karnet</p>
           </li>
@@ -58,20 +50,12 @@ export default function Menu() {
           to="discount"
           onClick={onClickLinkHandler}
         >
-          <li
-            className={`${styles.list__item} ${
-              stateGlobal.state.menuBtnClick ? styles.list__item_menuOpen : ""
-            }`}
-          >
+          <li className={styles.list__item}>
             <img className={styles.item__img} src={imgPrice} alt="price" />
             <p className={styles.list__item__text}>Znizka</p>
           </li>
         </Link>
-        <li
-          className={`${styles.list__item} ${
-            stateGlobal.state.menuBtnClick ? styles.list__item_menuOpen : ""
-          }`}
-        >
+        <li className={styles.list__item}>
           <img className={styles.item__img} src={imgUser} alt="user" />
           <p className={styles.list__item__text}>Konto</p>
         </li>

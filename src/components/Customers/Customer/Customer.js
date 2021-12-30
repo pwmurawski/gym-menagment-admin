@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
-import { useEffect, useState, useRef, useContext } from "react";
-import EditCustomer from "../../EditCustomer/EditCustomer";
+import { useState, useContext, useEffect } from "react";
+import EditCustomer from "../EditCustomer/EditCustomer";
 import styles from "./Customer.module.css";
 import ReducerContext from "../../../context/Context";
+import randomColor from "../../../helpers/randomColor";
 
 const propTypes = {
   id: PropTypes.number.isRequired,
@@ -30,13 +31,11 @@ export default function Customer({
   discount,
 }) {
   const [showEditCustomer, setShowEditCustomer] = useState(false);
-  const fristNameIconRef = useRef(null);
   const stateGlobal = useContext(ReducerContext);
+  const ticketDateTo = new Date(ticket.dateTo);
 
   useEffect(() => {
-    const hue = Math.floor(Math.random() * 360);
-    const pastel = `hsl(${hue}, 100%, 70%)`;
-    fristNameIconRef.current.style.backgroundColor = pastel;
+    return () => {};
   }, []);
 
   return (
@@ -64,19 +63,18 @@ export default function Customer({
         />
       ) : (
         <>
-          <td className={`${styles.fristName} ${styles.customerItem}`}>
+          <td className={`${styles.name} ${styles.customerItem}`}>
             <p className={styles.tooltip}>Kliknij 2 razy aby edytowac</p>
-            <div className={styles.fristName__containerIcon}>
+            <div className={styles.name__containerIcon}>
               <div
-                ref={fristNameIconRef}
-                className={styles.fristName__icon}
+                className={styles.name__icon}
+                style={{ backgroundColor: randomColor() }}
               >{`${firstName[0]}${lastName[0]}`}</div>
             </div>
-            <p className={styles.firstName__text}>{firstName}</p>
-          </td>
-          <td className={styles.customerItem}>
-            <p className={styles.tooltip}>Kliknij 2 razy aby edytowac</p>
-            {lastName}
+            <div className={styles.name__containerText}>
+              <p className={styles.name__text}>{firstName}</p>
+              <p className={styles.name__text}>{lastName}</p>
+            </div>
           </td>
           <td className={styles.customerItem}>
             <p className={styles.tooltip}>Kliknij 2 razy aby edytowac</p>
@@ -98,7 +96,9 @@ export default function Customer({
           </td>
           <td className={styles.customerItem}>
             <p className={styles.tooltip}>Kliknij 2 razy aby edytowac</p>
-            {ticket.dateTo}
+            {`${ticketDateTo.getDate()} | ${
+              ticketDateTo.getMonth() + 1
+            } | ${ticketDateTo.getFullYear()}`}
           </td>
         </>
       )}
