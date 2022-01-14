@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import styles from "./Menu.module.css";
 import imgLogo from "../../../assets/logo.png";
 import imgKarnet from "../../../assets/karnet.png";
@@ -29,7 +29,13 @@ export default function Menu() {
         <h1 className={styles.logo__title}>Gym</h1>
       </div>
       <ul className={styles.menu__list}>
-        <Link className={styles.link} to="/" onClick={onClickLinkHandler}>
+        <NavLink
+          className={({ isActive }) =>
+            isActive ? styles.link_active : styles.link
+          }
+          to="/"
+          onClick={onClickLinkHandler}
+        >
           <li className={styles.list__item}>
             <img
               className={styles.item__img}
@@ -38,15 +44,23 @@ export default function Menu() {
             />
             <p className={styles.list__item__text}>Strona główna</p>
           </li>
-        </Link>
-        <Link className={styles.link} to="ticket" onClick={onClickLinkHandler}>
+        </NavLink>
+        <NavLink
+          className={({ isActive }) =>
+            isActive ? styles.link_active : styles.link
+          }
+          to="ticket"
+          onClick={onClickLinkHandler}
+        >
           <li className={styles.list__item}>
             <img className={styles.item__img} src={imgKarnet} alt="ticket" />
             <p className={styles.list__item__text}>Karnet</p>
           </li>
-        </Link>
-        <Link
-          className={styles.link}
+        </NavLink>
+        <NavLink
+          className={({ isActive }) =>
+            isActive ? styles.link_active : styles.link
+          }
           to="discount"
           onClick={onClickLinkHandler}
         >
@@ -54,7 +68,7 @@ export default function Menu() {
             <img className={styles.item__img} src={imgPrice} alt="price" />
             <p className={styles.list__item__text}>Znizka</p>
           </li>
-        </Link>
+        </NavLink>
         <li className={styles.list__item}>
           <img className={styles.item__img} src={imgUser} alt="user" />
           <p className={styles.list__item__text}>Konto</p>

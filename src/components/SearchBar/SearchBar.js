@@ -12,7 +12,7 @@ export default function SearchBar() {
   });
   const stateGlobal = useContext(ReducerContext);
   const mediaQuery = window.matchMedia("(max-width: 760px)");
-  const [isMediaMatch, setIsMediaMatch] = useState(false);
+  const [isMediaMatch, setIsMediaMatch] = useState(!!mediaQuery.matches);
   const [searchBtnClick, setSearchBtnClick] = useState(false);
   const navigate = useNavigate();
 
@@ -30,7 +30,6 @@ export default function SearchBar() {
   };
 
   const mediaMenuHidden = () => {
-    if (mediaQuery.matches) setIsMediaMatch(true);
     const resizeHandler = () => {
       if (mediaQuery.matches) setIsMediaMatch(true);
       else setIsMediaMatch(false);

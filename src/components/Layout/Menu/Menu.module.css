@@ -65,6 +65,18 @@
     cursor: pointer;
 }
 
+.link_active
+{
+    text-decoration: none;
+}
+
+.link_active .list__item
+{
+    box-sizing: border-box;
+    border: 1px solid rgb(0, 255, 179);
+    transform: rotate(-10deg);
+}
+
 .menu_openMenu .list__item
 {
     width: calc(100% - 10px);
@@ -73,6 +85,7 @@
     margin-right: 5px;
     color: black;
     border-radius: 5px;
+    transform: none;
 }
 
 .item__img
@@ -91,6 +104,11 @@
 }
 
 .link
+{
+    text-decoration: none;
+}
+
+.link_active
 {
     text-decoration: none;
 }
