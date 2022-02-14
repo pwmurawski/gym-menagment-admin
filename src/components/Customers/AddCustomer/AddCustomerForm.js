@@ -27,13 +27,14 @@ export default function AddCustomerForm({
     code: "",
     ticketType: "",
   };
-
+  const abortController = new AbortController();
+  const { signal } = abortController;
   const [backendMsg, setBackendMsg] = useState(null);
   const [customerData, setCustomerData] = useState(initFormData);
   const [isSubmit, setIsSubmit] = useState(false);
   const stateGlobal = useContext(ReducerContext);
 
-  const submit = async (signal) => {
+  const submit = async () => {
     FetchApi(
       "/customer/add",
       {
@@ -72,11 +73,8 @@ export default function AddCustomerForm({
   };
 
   useEffect(() => {
-    const abortController = new AbortController();
-    const { signal } = abortController;
-
     if (isSubmit) {
-      submit(signal);
+      submit();
     }
 
     return () => {

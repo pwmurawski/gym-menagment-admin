@@ -16,12 +16,14 @@ export default function AddDiscountForm({ discountsArray, setDiscountsArray }) {
     status: false,
   };
 
+  const abortController = new AbortController();
+  const { signal } = abortController;
   const [discountData, setDiscountData] = useState(initFormData);
   const [backendMsg, setBackendMsg] = useState(null);
   const [isSubmit, setIsSubmit] = useState(false);
   const stateGlobal = useContext(ReducerContext);
 
-  const submit = async (signal) => {
+  const submit = async () => {
     FetchApi(
       "/discount/add",
       {
@@ -55,11 +57,8 @@ export default function AddDiscountForm({ discountsArray, setDiscountsArray }) {
   };
 
   useEffect(() => {
-    const abortController = new AbortController();
-    const { signal } = abortController;
-
     if (isSubmit) {
-      submit(signal);
+      submit();
     }
 
     return () => {

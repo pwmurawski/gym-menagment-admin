@@ -10,11 +10,13 @@ import ReducerContext from "../../context/Context";
 import FetchApi from "../../helpers/fetchApi";
 
 export default function Discount() {
+  const abortController = new AbortController();
+  const { signal } = abortController;
   const [discountsArray, setDiscountsArray] = useState([]);
   const [loading, setLoading] = useState(true);
   const stateGlobal = useContext(ReducerContext);
 
-  const fetchDiscounts = async (signal) => {
+  const fetchDiscounts = async () => {
     FetchApi(
       "/discount",
       {
@@ -30,10 +32,7 @@ export default function Discount() {
   };
 
   useEffect(() => {
-    const abortController = new AbortController();
-    const { signal } = abortController;
-
-    fetchDiscounts(signal);
+    fetchDiscounts();
 
     return () => {
       abortController.abort();

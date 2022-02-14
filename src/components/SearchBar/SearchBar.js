@@ -46,16 +46,9 @@ export default function SearchBar() {
   }, []);
 
   useEffect(() => {
-    const abortController = new AbortController();
-    const { signal } = abortController;
-
     if (formData.search !== " ") {
-      search(signal);
+      search();
     }
-
-    return () => {
-      abortController.abort();
-    };
   }, [formData.search, isSubmit]);
 
   return (

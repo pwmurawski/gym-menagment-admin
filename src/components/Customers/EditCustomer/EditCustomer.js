@@ -34,6 +34,8 @@ export default function EditCustomer({
   discountArray,
   ticketArray,
 }) {
+  const abortController = new AbortController();
+  const { signal } = abortController;
   const [isSubmit, setIsSubmit] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [customerData, setCustomerData] = useState({
@@ -45,7 +47,7 @@ export default function EditCustomer({
     ticketType: ticket.ticketTypeId,
   });
 
-  const submit = async (signal) => {
+  const submit = async () => {
     FetchApi(
       `/customer/${id}`,
       {
@@ -76,7 +78,7 @@ export default function EditCustomer({
     );
   };
 
-  const deleteCustomer = (signal) => {
+  const deleteCustomer = () => {
     FetchApi(
       `/customer/${id}`,
       {
@@ -100,11 +102,8 @@ export default function EditCustomer({
   };
 
   useEffect(() => {
-    const abortController = new AbortController();
-    const { signal } = abortController;
-
     if (isSubmit) {
-      submit(signal);
+      submit();
     }
 
     return () => {
@@ -113,11 +112,8 @@ export default function EditCustomer({
   }, [isSubmit]);
 
   useEffect(() => {
-    const abortController = new AbortController();
-    const { signal } = abortController;
-
     if (isDelete) {
-      deleteCustomer(signal);
+      deleteCustomer();
     }
 
     return () => {

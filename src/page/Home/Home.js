@@ -10,6 +10,8 @@ import FetchApi from "../../helpers/fetchApi";
 import ReducerContext from "../../context/Context";
 
 export default function Home() {
+  const abortController = new AbortController();
+  const { signal } = abortController;
   const [loading, setLoading] = useState(true);
   const [tablePage, setTablePage] = useState({
     currentPage: 0,
@@ -20,7 +22,7 @@ export default function Home() {
   const [ticketArray, setTicketArray] = useState([]);
   const stateGlobal = useContext(ReducerContext);
 
-  const fetchCustomersPage = async (signal) => {
+  const fetchCustomersPage = async () => {
     FetchApi(`/customer?page=${tablePage.currentPage}`, { signal }, (res) => {
       setTablePage({ ...tablePage, totalPages: res.totalPages });
       setCustomersArray([...customersArray, ...res.customers]);
@@ -28,7 +30,7 @@ export default function Home() {
     });
   };
 
-  const fetchDiscount = async (signal) => {
+  const fetchDiscount = async () => {
     FetchApi(
       "/discount",
       {
@@ -40,7 +42,7 @@ export default function Home() {
     );
   };
 
-  const fetchTicket = async (signal) => {
+  const fetchTicket = async () => {
     FetchApi(
       "/ticket",
       {
@@ -53,10 +55,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const abortController = new AbortController();
-    const { signal } = abortController;
-
-    fetchCustomersPage(signal);
+    fetchCustomersPage();
 
     return () => {
       abortController.abort();
@@ -64,11 +63,8 @@ export default function Home() {
   }, [tablePage.currentPage]);
 
   useEffect(() => {
-    const abortController = new AbortController();
-    const { signal } = abortController;
-
-    fetchDiscount(signal);
-    fetchTicket(signal);
+    fetchDiscount();
+    fetchTicket();
 
     return () => {
       abortController.abort();

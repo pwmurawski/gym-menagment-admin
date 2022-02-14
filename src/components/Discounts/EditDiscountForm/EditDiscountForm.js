@@ -24,6 +24,8 @@ export default function EditDiscountForm({
   discountsArray,
   setDiscountsArray,
 }) {
+  const abortController = new AbortController();
+  const { signal } = abortController;
   const [discountData, setDiscountData] = useState({
     id,
     name,
@@ -33,7 +35,7 @@ export default function EditDiscountForm({
   const [backendMsg, setBackendMsg] = useState(null);
   const [isSubmit, setIsSubmit] = useState(false);
 
-  const submit = async (signal) => {
+  const submit = async () => {
     FetchApi(
       "/discount/edit",
       {
@@ -65,11 +67,8 @@ export default function EditDiscountForm({
   };
 
   useEffect(() => {
-    const abortController = new AbortController();
-    const { signal } = abortController;
-
     if (isSubmit) {
-      submit(signal);
+      submit();
     }
 
     return () => {

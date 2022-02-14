@@ -17,12 +17,14 @@ export default function AddTicketForm({ ticketsArray, setTicketsArray }) {
     status: false,
   };
 
+  const abortController = new AbortController();
+  const { signal } = abortController;
   const [ticketData, setTicketData] = useState(initFormData);
   const [backendMsg, setBackendMsg] = useState(null);
   const [isSubmit, setIsSubmit] = useState(false);
   const stateGlobal = useContext(ReducerContext);
 
-  const submit = async (signal) => {
+  const submit = async () => {
     FetchApi(
       "/ticket/add",
       {
@@ -56,11 +58,8 @@ export default function AddTicketForm({ ticketsArray, setTicketsArray }) {
   };
 
   useEffect(() => {
-    const abortController = new AbortController();
-    const { signal } = abortController;
-
     if (isSubmit) {
-      submit(signal);
+      submit();
     }
 
     return () => {

@@ -10,11 +10,13 @@ import ReducerContext from "../../context/Context";
 import FetchApi from "../../helpers/fetchApi";
 
 export default function Ticket() {
+  const abortController = new AbortController();
+  const { signal } = abortController;
   const [ticketsArray, setTicketsArray] = useState([]);
   const [loading, setLoading] = useState(true);
   const stateGlobal = useContext(ReducerContext);
 
-  const fetchTickets = async (signal) => {
+  const fetchTickets = async () => {
     FetchApi(
       "/ticket",
       {
@@ -30,10 +32,7 @@ export default function Ticket() {
   };
 
   useEffect(() => {
-    const abortController = new AbortController();
-    const { signal } = abortController;
-
-    fetchTickets(signal);
+    fetchTickets();
 
     return () => {
       abortController.abort();

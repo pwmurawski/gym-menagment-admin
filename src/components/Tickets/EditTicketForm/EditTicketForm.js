@@ -26,6 +26,8 @@ export default function EditTicketForm({
   ticketsArray,
   setTicketsArray,
 }) {
+  const abortController = new AbortController();
+  const { signal } = abortController;
   const [ticketData, setTicketData] = useState({
     id,
     name,
@@ -36,7 +38,7 @@ export default function EditTicketForm({
   const [backendMsg, setBackendMsg] = useState(null);
   const [isSubmit, setIsSubmit] = useState(false);
 
-  const submit = async (signal) => {
+  const submit = async () => {
     FetchApi(
       "/ticket/edit",
       {
@@ -69,11 +71,8 @@ export default function EditTicketForm({
   };
 
   useEffect(() => {
-    const abortController = new AbortController();
-    const { signal } = abortController;
-
     if (isSubmit) {
-      submit(signal);
+      submit();
     }
 
     return () => {

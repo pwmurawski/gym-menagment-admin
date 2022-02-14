@@ -10,6 +10,8 @@ import FetchApi from "../../helpers/fetchApi";
 import ReducerContext from "../../context/Context";
 
 export default function Search() {
+  const abortController = new AbortController();
+  const { signal } = abortController;
   const [loading, setLoading] = useState(true);
   const [customersArray, setCustomersArray] = useState([]);
   const [discountArray, setDiscountArray] = useState([]);
@@ -17,7 +19,7 @@ export default function Search() {
   const { term } = useParams();
   const stateGlobal = useContext(ReducerContext);
 
-  const search = async (signal) => {
+  const search = async () => {
     FetchApi(
       `/customer/search?q=${term}`,
       {
@@ -30,7 +32,7 @@ export default function Search() {
     );
   };
 
-  const fetchDiscount = async (signal) => {
+  const fetchDiscount = async () => {
     FetchApi(
       "/discount",
       {
@@ -42,7 +44,7 @@ export default function Search() {
     );
   };
 
-  const fetchTicket = async (signal) => {
+  const fetchTicket = async () => {
     FetchApi(
       "/ticket",
       {
@@ -55,10 +57,7 @@ export default function Search() {
   };
 
   useEffect(() => {
-    const abortController = new AbortController();
-    const { signal } = abortController;
-
-    search(signal);
+    search();
 
     return () => {
       abortController.abort();
@@ -66,11 +65,8 @@ export default function Search() {
   }, [term]);
 
   useEffect(() => {
-    const abortController = new AbortController();
-    const { signal } = abortController;
-
-    fetchDiscount(signal);
-    fetchTicket(signal);
+    fetchDiscount();
+    fetchTicket();
 
     return () => {
       abortController.abort();
