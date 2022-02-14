@@ -54,6 +54,27 @@ export default function Home() {
     );
   };
 
+  const deleteCustomer = (id) => {
+    FetchApi(
+      `/customer/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        signal,
+      },
+      (res) => {
+        if (res.msg.success) {
+          const newCustomersArray = customersArray.filter(
+            (customer) => customer.id !== id
+          );
+          setCustomersArray(newCustomersArray);
+        }
+      }
+    );
+  };
+
   useEffect(() => {
     fetchCustomersPage();
 
@@ -100,9 +121,9 @@ export default function Home() {
             <CustomersTableBody>
               <Customers
                 customersArray={customersArray}
-                setCustomersArray={setCustomersArray}
                 discountArray={discountArray}
                 ticketArray={ticketArray}
+                deleteCustomer={deleteCustomer}
               />
             </CustomersTableBody>
           </CustomersTable>

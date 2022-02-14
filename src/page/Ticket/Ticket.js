@@ -60,10 +60,7 @@ export default function Ticket() {
               headers={["Nazwa", "Cena", "Okres", "Status"]}
             />
             <CustomersTableBody>
-              <Tickets
-                ticketsArray={ticketsArray}
-                setTicketsArray={setTicketsArray}
-              />
+              <Tickets ticketsArray={ticketsArray} />
             </CustomersTableBody>
           </CustomersTable>
           {ticketsArray.length === 0 ? (

@@ -16,7 +16,6 @@ import { reducer, initialState } from "./reducer";
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const stateMemo = useMemo(() => ({ state, dispatch }), [state, dispatch]);
-  window.localStorage.setItem("theme", state.theme);
   document.body.setAttribute("class", state.theme);
 
   const header = <Header />;

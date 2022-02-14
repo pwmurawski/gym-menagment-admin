@@ -6,37 +6,35 @@ import ReducerContext from "../../../context/Context";
 import randomColor from "../../../helpers/randomColor";
 
 const propTypes = {
-  id: PropTypes.number.isRequired,
-  customersArray: PropTypes.array.isRequired,
-  setCustomersArray: PropTypes.func.isRequired,
-  firstName: PropTypes.string.isRequired,
-  lastName: PropTypes.string.isRequired,
-  number: PropTypes.string.isRequired,
-  ticket: PropTypes.object.isRequired,
-  discount: PropTypes.object.isRequired,
+  customerDataProps: PropTypes.object.isRequired,
   discountArray: PropTypes.array.isRequired,
   ticketArray: PropTypes.array.isRequired,
+  deleteCustomer: PropTypes.func.isRequired,
 };
 
 export default function Customer({
-  id,
-  customersArray,
-  setCustomersArray,
+  customerDataProps,
   discountArray,
   ticketArray,
-  firstName,
-  lastName,
-  number,
-  ticket,
-  discount,
+  deleteCustomer,
 }) {
-  const [showEditCustomer, setShowEditCustomer] = useState(false);
   const stateGlobal = useContext(ReducerContext);
-  const ticketDateTo = new Date(ticket.dateTo);
+  const [showEditCustomer, setShowEditCustomer] = useState(false);
+  const [customerData, setCustomerData] = useState({
+    id: null,
+    firstName: "",
+    lastName: "",
+    number: "",
+    ticket: {},
+    discount: {},
+  });
+  const ticketDateTo = new Date(customerData.ticket.dateTo);
 
   useEffect(() => {
-    return () => {};
-  }, []);
+    if (customerDataProps.id) {
+      setCustomerData(customerDataProps);
+    }
+  }, [customerDataProps.id]);
 
   return (
     <tr
@@ -49,17 +47,12 @@ export default function Customer({
     >
       {showEditCustomer ? (
         <EditCustomer
-          id={id}
-          setShowEditCustomer={setShowEditCustomer}
-          customersArray={customersArray}
-          setCustomersArray={setCustomersArray}
+          customerData={customerData}
+          setCustomerData={setCustomerData}
           discountArray={discountArray}
           ticketArray={ticketArray}
-          firstName={firstName}
-          lastName={lastName}
-          number={number}
-          ticket={ticket}
-          discount={discount}
+          setShowEditCustomer={setShowEditCustomer}
+          deleteCustomer={deleteCustomer}
         />
       ) : (
         <>
@@ -69,30 +62,34 @@ export default function Customer({
               <div
                 className={styles.name__icon}
                 style={{ backgroundColor: randomColor() }}
-              >{`${firstName[0]}${lastName[0]}`}</div>
+              >{`${customerData.firstName[0]}${customerData.lastName[0]}`}</div>
             </div>
             <div className={styles.name__containerText}>
-              <p className={styles.name__text}>{firstName}</p>
-              <p className={styles.name__text}>{lastName}</p>
+              <p className={styles.name__text}>{customerData.firstName}</p>
+              <p className={styles.name__text}>{customerData.lastName}</p>
             </div>
           </td>
           <td className={styles.customerItem}>
             <p className={styles.tooltip}>Kliknij 2 razy aby edytowac</p>
-            {number}
+            {customerData.number}
           </td>
           <td className={styles.customerItem}>
             <p className={styles.tooltip}>Kliknij 2 razy aby edytowac</p>
-            <p className={styles.customerItem__text}>{ticket.name}</p>
+            <p className={styles.customerItem__text}>
+              {customerData.ticket.name}
+            </p>
             <p
               className={styles.customerItem__text}
-            >{`Cena:${ticket.finalPrice} zł`}</p>
+            >{`Cena:${customerData.ticket.finalPrice} zł`}</p>
           </td>
           <td className={styles.customerItem}>
             <p className={styles.tooltip}>Kliknij 2 razy aby edytowac</p>
-            <p className={styles.customerItem__text}>{discount.name}</p>
+            <p className={styles.customerItem__text}>
+              {customerData.discount.name}
+            </p>
             <p
               className={styles.customerItem__text}
-            >{`${discount.discount}%`}</p>
+            >{`${customerData.discount.discount}%`}</p>
           </td>
           <td className={styles.customerItem}>
             <p className={styles.tooltip}>Kliknij 2 razy aby edytowac</p>

@@ -8,95 +8,73 @@ import ImgDelete from "../../../assets/delete.png";
 import ImgExit from "../../../assets/exit.png";
 
 const propTypes = {
-  id: PropTypes.number.isRequired,
-  firstName: PropTypes.string.isRequired,
-  lastName: PropTypes.string.isRequired,
-  number: PropTypes.string.isRequired,
-  discount: PropTypes.object.isRequired,
-  ticket: PropTypes.object.isRequired,
+  customerData: PropTypes.object.isRequired,
   setShowEditCustomer: PropTypes.func.isRequired,
-  customersArray: PropTypes.array.isRequired,
-  setCustomersArray: PropTypes.func.isRequired,
+  setCustomerData: PropTypes.func.isRequired,
   discountArray: PropTypes.array.isRequired,
   ticketArray: PropTypes.array.isRequired,
+  deleteCustomer: PropTypes.func.isRequired,
 };
 
 export default function EditCustomer({
-  id,
-  firstName,
-  lastName,
-  number,
-  discount,
-  ticket,
+  customerData,
   setShowEditCustomer,
-  customersArray,
-  setCustomersArray,
+  setCustomerData,
   discountArray,
   ticketArray,
+  deleteCustomer,
 }) {
   const abortController = new AbortController();
   const { signal } = abortController;
   const [isSubmit, setIsSubmit] = useState(false);
-  const [isDelete, setIsDelete] = useState(false);
-  const [customerData, setCustomerData] = useState({
-    firstName,
-    lastName,
-    number,
-    discountId: discount.id,
-    code: ticket.code,
-    ticketType: ticket.ticketTypeId,
+  const [customerId, setCustomerId] = useState(null);
+  const [newCustomerData, setNewCustomerData] = useState({
+    firstName: "",
+    lastName: "",
+    number: "",
+    discountId: "",
+    ticketType: "",
+    code: "",
   });
+
+  useEffect(() => {
+    if (customerData.id) {
+      setCustomerId(customerData.id);
+      setNewCustomerData({
+        firstName: customerData.firstName,
+        lastName: customerData.lastName,
+        number: customerData.number,
+        discountId: customerData.discount.id,
+        code: customerData.ticket.code,
+        ticketType: customerData.ticket.ticketTypeId,
+      });
+    }
+  }, [customerData.id]);
 
   const submit = async () => {
     FetchApi(
-      `/customer/${id}`,
+      `/customer/${customerId}`,
       {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         signal,
-        body: JSON.stringify(customerData),
+        body: JSON.stringify(newCustomerData),
       },
       (res) => {
         if (res.msg.success) {
-          customersArray.forEach((element) => {
-            if (element.id === id) {
-              element.id = res.customer.id;
-              element.firstName = res.customer.firstName;
-              element.lastName = res.customer.lastName;
-              element.number = res.customer.number;
-              element.ticket = res.customer.ticket;
-              element.discount = res.customer.discount;
-            }
+          setCustomerData({
+            id: res.customer.id,
+            firstName: res.customer.firstName,
+            lastName: res.customer.lastName,
+            number: res.customer.number,
+            ticket: res.customer.ticket,
+            discount: res.customer.discount,
           });
-          setCustomersArray([...customersArray]);
           setShowEditCustomer(false);
         }
         setIsSubmit(false);
-      }
-    );
-  };
-
-  const deleteCustomer = () => {
-    FetchApi(
-      `/customer/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        signal,
-      },
-      (res) => {
-        if (res.msg.success) {
-          const newCustomersArray = customersArray.filter(
-            (customer) => customer.id !== id
-          );
-          setCustomersArray(newCustomersArray);
-        }
-        setShowEditCustomer(false);
-        setIsDelete(true);
       }
     );
   };
@@ -111,23 +89,16 @@ export default function EditCustomer({
     };
   }, [isSubmit]);
 
-  useEffect(() => {
-    if (isDelete) {
-      deleteCustomer();
-    }
-
-    return () => {
-      abortController.abort();
-    };
-  }, [isDelete]);
-
   return (
     <>
       <td className={styles.form__item}>
         <input
-          value={customerData.firstName}
+          value={newCustomerData.firstName}
           onChange={(e) =>
-            setCustomerData({ ...customerData, firstName: e.target.value })
+            setNewCustomerData({
+              ...newCustomerData,
+              firstName: e.target.value,
+            })
           }
           placeholder="Imie"
           className={`${styles.form__input} ${styles.form__input_first}`}
@@ -136,9 +107,9 @@ export default function EditCustomer({
       </td>
       <td className={styles.form__item}>
         <input
-          value={customerData.lastName}
+          value={newCustomerData.lastName}
           onChange={(e) =>
-            setCustomerData({ ...customerData, lastName: e.target.value })
+            setNewCustomerData({ ...newCustomerData, lastName: e.target.value })
           }
           placeholder="Nazwisko"
           className={styles.form__input}
@@ -147,9 +118,9 @@ export default function EditCustomer({
       </td>
       <td className={styles.form__item}>
         <input
-          value={customerData.number}
+          value={newCustomerData.number}
           onChange={(e) =>
-            setCustomerData({ ...customerData, number: e.target.value })
+            setNewCustomerData({ ...newCustomerData, number: e.target.value })
           }
           placeholder="Numer"
           className={styles.form__input}
@@ -158,9 +129,9 @@ export default function EditCustomer({
       </td>
       <td className={styles.form__item}>
         <input
-          value={customerData.code}
+          value={newCustomerData.code}
           onChange={(e) =>
-            setCustomerData({ ...customerData, code: e.target.value })
+            setNewCustomerData({ ...newCustomerData, code: e.target.value })
           }
           placeholder="Code"
           className={styles.form__input}
@@ -169,9 +140,12 @@ export default function EditCustomer({
       </td>
       <td className={styles.form__item}>
         <select
-          value={customerData.ticketType}
+          value={newCustomerData.ticketType}
           onChange={(e) =>
-            setCustomerData({ ...customerData, ticketType: e.target.value })
+            setNewCustomerData({
+              ...newCustomerData,
+              ticketType: e.target.value,
+            })
           }
           className={styles.form__select}
           name="ticket"
@@ -194,9 +168,12 @@ export default function EditCustomer({
       </td>
       <td className={styles.form__item}>
         <select
-          value={customerData.discountId}
+          value={newCustomerData.discountId}
           onChange={(e) =>
-            setCustomerData({ ...customerData, discountId: e.target.value })
+            setNewCustomerData({
+              ...newCustomerData,
+              discountId: e.target.value,
+            })
           }
           className={styles.form__select}
           name="discount"
@@ -230,11 +207,15 @@ export default function EditCustomer({
         <button
           type="button"
           onClick={() => {
-            setIsDelete(true);
+            deleteCustomer(customerId);
           }}
           className={`${styles.form__btn} ${styles.form__btn_delete}`}
         >
-          <img className={styles.form__btn__icon} src={ImgDelete} alt="edit" />
+          <img
+            className={styles.form__btn__icon}
+            src={ImgDelete}
+            alt="delete"
+          />
           <p className={styles.tooltip}>Usuń</p>
         </button>
       </td>
@@ -246,7 +227,7 @@ export default function EditCustomer({
           }}
           className={`${styles.form__btn} ${styles.form__btn_exit}`}
         >
-          <img className={styles.form__btn__icon} src={ImgExit} alt="edit" />
+          <img className={styles.form__btn__icon} src={ImgExit} alt="exit" />
           <p className={styles.tooltip}>Wyjdz</p>
         </button>
       </td>

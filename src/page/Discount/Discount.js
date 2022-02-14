@@ -58,10 +58,7 @@ export default function Discount() {
           <CustomersTable>
             <CustomersTableHead headers={["Nazwa", "Zniżka", "Status"]} />
             <CustomersTableBody>
-              <Discounts
-                discountsArray={discountsArray}
-                setDiscountsArray={setDiscountsArray}
-              />
+              <Discounts discountsArray={discountsArray} />
             </CustomersTableBody>
           </CustomersTable>
           {discountsArray.length === 0 ? (

@@ -3,10 +3,9 @@ import Discount from "./Discount/Discount";
 
 const propTypes = {
   discountsArray: PropTypes.array.isRequired,
-  setDiscountsArray: PropTypes.func.isRequired,
 };
 
-export default function Discounts({ discountsArray, setDiscountsArray }) {
+export default function Discounts({ discountsArray }) {
   return (
     <>
       {discountsArray.map((discount) => (
@@ -16,8 +15,6 @@ export default function Discounts({ discountsArray, setDiscountsArray }) {
           name={discount.name}
           discount={discount.discount}
           status={discount.status}
-          discountsArray={discountsArray}
-          setDiscountsArray={setDiscountsArray}
         />
       ))}
     </>

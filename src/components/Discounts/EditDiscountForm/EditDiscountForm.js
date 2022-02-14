@@ -6,34 +6,32 @@ import ImgEdit from "../../../assets/edit.png";
 import ImgExit from "../../../assets/exit.png";
 
 const propTypes = {
-  id: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
-  discount: PropTypes.any.isRequired,
-  status: PropTypes.bool.isRequired,
+  discountData: PropTypes.object.isRequired,
+  setDiscountData: PropTypes.func.isRequired,
   setShowEditDiscount: PropTypes.func.isRequired,
-  discountsArray: PropTypes.array.isRequired,
-  setDiscountsArray: PropTypes.func.isRequired,
 };
 
 export default function EditDiscountForm({
-  id,
-  name,
-  discount,
-  status,
+  discountData,
+  setDiscountData,
   setShowEditDiscount,
-  discountsArray,
-  setDiscountsArray,
 }) {
   const abortController = new AbortController();
   const { signal } = abortController;
-  const [discountData, setDiscountData] = useState({
-    id,
-    name,
-    discount,
-    status,
-  });
   const [backendMsg, setBackendMsg] = useState(null);
   const [isSubmit, setIsSubmit] = useState(false);
+  const [newDiscountData, setNewDiscountData] = useState({
+    id: null,
+    name: "",
+    discount: "",
+    status: false,
+  });
+
+  useEffect(() => {
+    if (discountData.id) {
+      setNewDiscountData(discountData);
+    }
+  }, [discountData.id]);
 
   const submit = async () => {
     FetchApi(
@@ -44,20 +42,11 @@ export default function EditDiscountForm({
           "Content-Type": "application/json",
         },
         signal,
-        body: JSON.stringify(discountData),
+        body: JSON.stringify(newDiscountData),
       },
       (res) => {
         if (res.msg.success) {
-          discountsArray.forEach((e) => {
-            if (e.id === id) {
-              e.id = discountData.id;
-              e.name = discountData.name;
-              e.discount = discountData.discount;
-              e.status = discountData.status;
-            }
-          });
-
-          setDiscountsArray([...discountsArray]);
+          setDiscountData(newDiscountData);
         }
 
         setShowEditDiscount(false);
@@ -93,9 +82,9 @@ export default function EditDiscountForm({
     <>
       <td>
         <input
-          value={discountData.name}
+          value={newDiscountData.name}
           onChange={(e) =>
-            setDiscountData({ ...discountData, name: e.target.value })
+            setNewDiscountData({ ...newDiscountData, name: e.target.value })
           }
           placeholder="Nazwa"
           className={styles.form__input}
@@ -104,9 +93,9 @@ export default function EditDiscountForm({
       </td>
       <td>
         <input
-          value={discountData.discount}
+          value={newDiscountData.discount}
           onChange={(e) =>
-            setDiscountData({ ...discountData, discount: e.target.value })
+            setNewDiscountData({ ...newDiscountData, discount: e.target.value })
           }
           placeholder="Zniżka"
           className={styles.form__input}
@@ -116,9 +105,12 @@ export default function EditDiscountForm({
       <td>
         <label className={styles.form__switch} htmlFor="toggleSwitch">
           <input
-            defaultChecked={status}
+            checked={newDiscountData.status}
             onChange={(e) =>
-              setDiscountData({ ...discountData, status: e.target.checked })
+              setNewDiscountData({
+                ...newDiscountData,
+                status: e.target.checked,
+              })
             }
             className={styles.form__checkbox}
             type="checkbox"

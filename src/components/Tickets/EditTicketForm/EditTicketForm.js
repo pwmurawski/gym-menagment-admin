@@ -6,37 +6,33 @@ import ImgEdit from "../../../assets/edit.png";
 import ImgExit from "../../../assets/exit.png";
 
 const propTypes = {
-  id: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
-  price: PropTypes.string.isRequired,
-  activeDays: PropTypes.any.isRequired,
-  status: PropTypes.bool.isRequired,
+  ticketData: PropTypes.object.isRequired,
+  setTicketData: PropTypes.func.isRequired,
   setShowEditTicket: PropTypes.func.isRequired,
-  ticketsArray: PropTypes.array.isRequired,
-  setTicketsArray: PropTypes.func.isRequired,
 };
 
 export default function EditTicketForm({
-  id,
-  name,
-  price,
-  activeDays,
-  status,
+  ticketData,
+  setTicketData,
   setShowEditTicket,
-  ticketsArray,
-  setTicketsArray,
 }) {
   const abortController = new AbortController();
   const { signal } = abortController;
-  const [ticketData, setTicketData] = useState({
-    id,
-    name,
-    price,
-    activeDays,
-    status,
-  });
   const [backendMsg, setBackendMsg] = useState(null);
   const [isSubmit, setIsSubmit] = useState(false);
+  const [newTicketData, setNewTicketData] = useState({
+    id: null,
+    name: "",
+    price: "",
+    activeDays: "",
+    status: false,
+  });
+
+  useEffect(() => {
+    if (ticketData.id) {
+      setNewTicketData(ticketData);
+    }
+  }, [ticketData.id]);
 
   const submit = async () => {
     FetchApi(
@@ -47,23 +43,12 @@ export default function EditTicketForm({
           "Content-Type": "application/json",
         },
         signal,
-        body: JSON.stringify(ticketData),
+        body: JSON.stringify(newTicketData),
       },
       (res) => {
         if (res.msg.success) {
-          ticketsArray.forEach((e) => {
-            if (e.id === id) {
-              e.id = ticketData.id;
-              e.name = ticketData.name;
-              e.price = ticketData.price;
-              e.activeDays = ticketData.activeDays;
-              e.status = ticketData.status;
-            }
-          });
-
-          setTicketsArray([...ticketsArray]);
+          setTicketData(newTicketData);
         }
-
         setShowEditTicket(false);
         setIsSubmit(false);
       }
@@ -97,9 +82,9 @@ export default function EditTicketForm({
     <>
       <td>
         <input
-          value={ticketData.name}
+          value={newTicketData.name}
           onChange={(e) =>
-            setTicketData({ ...ticketData, name: e.target.value })
+            setNewTicketData({ ...newTicketData, name: e.target.value })
           }
           placeholder="Nazwa"
           className={styles.form__input}
@@ -108,9 +93,9 @@ export default function EditTicketForm({
       </td>
       <td>
         <input
-          value={ticketData.price}
+          value={newTicketData.price}
           onChange={(e) =>
-            setTicketData({ ...ticketData, price: e.target.value })
+            setNewTicketData({ ...newTicketData, price: e.target.value })
           }
           placeholder="Cena"
           className={styles.form__input}
@@ -119,9 +104,9 @@ export default function EditTicketForm({
       </td>
       <td>
         <input
-          value={ticketData.activeDays}
+          value={newTicketData.activeDays}
           onChange={(e) =>
-            setTicketData({ ...ticketData, activeDays: e.target.value })
+            setNewTicketData({ ...newTicketData, activeDays: e.target.value })
           }
           placeholder="Dni"
           className={styles.form__input}
@@ -131,9 +116,9 @@ export default function EditTicketForm({
       <td>
         <label className={styles.form__switch} htmlFor="toggleSwitch">
           <input
-            defaultChecked={status}
+            checked={newTicketData.status}
             onChange={(e) =>
-              setTicketData({ ...ticketData, status: e.target.checked })
+              setNewTicketData({ ...newTicketData, status: e.target.checked })
             }
             className={styles.form__checkbox}
             type="checkbox"

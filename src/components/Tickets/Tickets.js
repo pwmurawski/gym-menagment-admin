@@ -3,10 +3,9 @@ import Ticket from "./Ticket/Ticket";
 
 const propTypes = {
   ticketsArray: PropTypes.array.isRequired,
-  setTicketsArray: PropTypes.func.isRequired,
 };
 
-export default function Tickets({ ticketsArray, setTicketsArray }) {
+export default function Tickets({ ticketsArray }) {
   return (
     <>
       {ticketsArray.map((ticket) => (
@@ -17,8 +16,6 @@ export default function Tickets({ ticketsArray, setTicketsArray }) {
           price={ticket.price}
           activeDays={ticket.activeDays}
           status={ticket.status}
-          ticketsArray={ticketsArray}
-          setTicketsArray={setTicketsArray}
         />
       ))}
     </>
