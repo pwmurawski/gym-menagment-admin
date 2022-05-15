@@ -16,7 +16,7 @@ export default function SearchBar() {
   const [searchBtnClick, setSearchBtnClick] = useState(false);
   const navigate = useNavigate();
 
-  const search = async () => {
+  const search = () => {
     if (!(formData.search === "")) {
       navigate(`/wyszukaj/${formData.search}${formData.searchFor}`);
     } else {

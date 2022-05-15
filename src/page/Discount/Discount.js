@@ -7,7 +7,7 @@ import LoadingIcon from "../../components/UI/LoadingIcon/LoadingIcon";
 import Discounts from "../../components/Discounts/Discounts";
 import AddDiscountForm from "../../components/Discounts/AddDiscountForm/AddDiscountForm";
 import ReducerContext from "../../context/Context";
-import FetchApi from "../../helpers/fetchApi";
+import { fetchDiscounts } from "../../api/queryDiscounts";
 
 export default function Discount() {
   const abortController = new AbortController();
@@ -16,56 +16,47 @@ export default function Discount() {
   const [loading, setLoading] = useState(true);
   const stateGlobal = useContext(ReducerContext);
 
-  const fetchDiscounts = async () => {
-    FetchApi(
-      "/discount",
-      {
-        signal,
-      },
-      (res) => {
-        setDiscountsArray(res.discounts);
-        if (res.discounts) {
-          setLoading(false);
-        }
-      }
-    );
+  const getDiscounts = async () => {
+    const res = await fetchDiscounts(signal);
+
+    if (res?.discounts) {
+      setDiscountsArray(res.discounts);
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    fetchDiscounts();
+    getDiscounts();
 
     return () => {
       abortController.abort();
     };
   }, []);
 
+  if (loading) {
+    return <LoadingIcon />;
+  }
   return (
-    <div>
-      {loading ? (
-        <LoadingIcon />
-      ) : (
-        <div
-          className={`${styles.pageContainer} ${
-            styles[stateGlobal.state.theme] ?? ""
-          }`}
-        >
-          <h2>Znizki:</h2>
-          <AddDiscountForm
-            discountsArray={discountsArray}
-            setDiscountsArray={setDiscountsArray}
-          />
+    <div
+      className={`${styles.pageContainer} ${
+        styles[stateGlobal.state.theme] ?? ""
+      }`}
+    >
+      <h2>Znizki:</h2>
+      <AddDiscountForm
+        discountsArray={discountsArray}
+        setDiscountsArray={setDiscountsArray}
+      />
 
-          <CustomersTable>
-            <CustomersTableHead headers={["Nazwa", "Zniżka", "Status"]} />
-            <CustomersTableBody>
-              <Discounts discountsArray={discountsArray} />
-            </CustomersTableBody>
-          </CustomersTable>
-          {discountsArray.length === 0 ? (
-            <h3 className={styles.messageEmptyCustomers}>Brak zniżek</h3>
-          ) : null}
-        </div>
-      )}
+      <CustomersTable>
+        <CustomersTableHead headers={["Nazwa", "Zniżka", "Status"]} />
+        <CustomersTableBody>
+          <Discounts discountsArray={discountsArray} />
+        </CustomersTableBody>
+      </CustomersTable>
+      {discountsArray.length === 0 ? (
+        <h3 className={styles.messageEmptyCustomers}>Brak zniżek</h3>
+      ) : null}
     </div>
   );
 }

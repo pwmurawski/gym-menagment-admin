@@ -1,3 +1,5 @@
+import initTheme from "../helpers/initTheme";
+
 export const reducer = (state, action) => {
   let theme = null;
   let menuBtnClick = false;
@@ -15,10 +17,6 @@ export const reducer = (state, action) => {
 };
 
 export const initialState = {
-  theme:
-    window.localStorage.getItem("theme") ??
-    window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "themeDark"
-      : "",
+  theme: initTheme(),
   menuBtnClick: false,
 };

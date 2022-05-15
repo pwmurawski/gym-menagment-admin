@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import styles from "./EditDiscountForm.module.css";
-import FetchApi from "../../../helpers/fetchApi";
 import ImgEdit from "../../../assets/edit.png";
 import ImgExit from "../../../assets/exit.png";
+import { fetchEditDiscount } from "../../../api/queryDiscounts";
 
 const propTypes = {
   discountData: PropTypes.object.isRequired,
@@ -34,25 +34,14 @@ export default function EditDiscountForm({
   }, [discountData.id]);
 
   const submit = async () => {
-    FetchApi(
-      "/discount/edit",
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        signal,
-        body: JSON.stringify(newDiscountData),
-      },
-      (res) => {
-        if (res.msg.success) {
-          setDiscountData(newDiscountData);
-        }
+    const res = await fetchEditDiscount(newDiscountData, signal);
 
-        setShowEditDiscount(false);
-        setIsSubmit(false);
-      }
-    );
+    if (res.msg.success) {
+      setDiscountData(newDiscountData);
+    }
+
+    setShowEditDiscount(false);
+    setIsSubmit(false);
   };
 
   useEffect(() => {

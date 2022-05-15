@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { useContext, useEffect, useState } from "react";
 import styles from "./AddDiscountForm.module.css";
 import ReducerContext from "../../../context/Context";
-import FetchApi from "../../../helpers/fetchApi";
+import { fetchAddDiscount } from "../../../api/queryDiscounts";
 
 const propTypes = {
   discountsArray: PropTypes.array.isRequired,
@@ -24,36 +24,25 @@ export default function AddDiscountForm({ discountsArray, setDiscountsArray }) {
   const stateGlobal = useContext(ReducerContext);
 
   const submit = async () => {
-    FetchApi(
-      "/discount/add",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        signal,
-        body: JSON.stringify(discountData),
-      },
-      (res) => {
-        if (res.msg.success) {
-          setDiscountData(initFormData);
-          setBackendMsg({
-            msg: res.msg.success,
-            status: true,
-          });
+    const res = await fetchAddDiscount(discountData, signal);
 
-          setDiscountsArray([...discountsArray, res.discount]);
-        }
+    if (res.msg.success) {
+      setDiscountData(initFormData);
+      setBackendMsg({
+        msg: res.msg.success,
+        status: true,
+      });
 
-        if (res.msg.error) {
-          setBackendMsg({
-            msg: res.msg.error,
-            status: false,
-          });
-        }
-        setIsSubmit(false);
-      }
-    );
+      setDiscountsArray([...discountsArray, res.discount]);
+    }
+
+    if (res.msg.error) {
+      setBackendMsg({
+        msg: res.msg.error,
+        status: false,
+      });
+    }
+    setIsSubmit(false);
   };
 
   useEffect(() => {

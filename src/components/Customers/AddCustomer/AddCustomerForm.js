@@ -2,74 +2,63 @@ import PropTypes from "prop-types";
 import { useState, useEffect, useContext } from "react";
 import styles from "./AddCustomerForm.module.css";
 import ReducerContext from "../../../context/Context";
-import FetchApi from "../../../helpers/fetchApi";
+import { fetchAddCustomer } from "../../../api/queryCustomers";
+import HomeContext from "../../../context/HomeContext";
+
+const initFormData = {
+  firstName: "",
+  lastName: "",
+  number: "",
+  discountId: "",
+  code: "",
+  ticketType: "",
+};
 
 const propTypes = {
   tablePage: PropTypes.object.isRequired,
-  customersArray: PropTypes.array.isRequired,
-  setCustomersArray: PropTypes.func.isRequired,
-  discountArray: PropTypes.array.isRequired,
-  ticketArray: PropTypes.array.isRequired,
 };
 
-export default function AddCustomerForm({
-  tablePage,
-  customersArray,
-  setCustomersArray,
-  discountArray,
-  ticketArray,
-}) {
-  const initFormData = {
-    firstName: "",
-    lastName: "",
-    number: "",
-    discountId: "",
-    code: "",
-    ticketType: "",
-  };
+export default function AddCustomerForm({ tablePage }) {
   const abortController = new AbortController();
   const { signal } = abortController;
   const [backendMsg, setBackendMsg] = useState(null);
   const [customerData, setCustomerData] = useState(initFormData);
   const [isSubmit, setIsSubmit] = useState(false);
+  const homeCon = useContext(HomeContext);
+  const { discountArray, ticketArray } = homeCon.state;
+  const { dispatch } = homeCon;
   const stateGlobal = useContext(ReducerContext);
 
   const submit = async () => {
-    FetchApi(
-      "/customer/add",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        signal,
-        body: JSON.stringify(customerData),
-      },
-      (res) => {
-        if (res.msg.success) {
-          setCustomerData(initFormData);
-          setBackendMsg({
-            msg: res.msg.success,
-            status: true,
-          });
+    const res = await fetchAddCustomer(customerData, signal);
 
-          if (tablePage.currentPage !== tablePage.totalPages - 1) {
-            customersArray.pop();
-            setCustomersArray([res.customer, ...customersArray]);
-          } else {
-            setCustomersArray([res.customer, ...customersArray]);
-          }
-        }
+    if (res.msg.success) {
+      setCustomerData(initFormData);
+      setBackendMsg({
+        msg: res.msg.success,
+        status: true,
+      });
 
-        if (res.msg.error) {
-          setBackendMsg({
-            msg: res.msg.error,
-            status: false,
-          });
-        }
-        setIsSubmit(false);
+      if (tablePage.currentPage !== tablePage.totalPages - 1) {
+        dispatch({
+          type: "addBeginCustomerNotLastPage",
+          customer: res.customer,
+        });
+      } else {
+        dispatch({
+          type: "addBeginCustomer",
+          customer: res.customer,
+        });
       }
-    );
+    }
+
+    if (res.msg.error) {
+      setBackendMsg({
+        msg: res.msg.error,
+        status: false,
+      });
+    }
+    setIsSubmit(false);
   };
 
   useEffect(() => {

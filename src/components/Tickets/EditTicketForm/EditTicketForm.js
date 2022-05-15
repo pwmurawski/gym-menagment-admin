@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import styles from "./EditTicketForm.module.css";
-import FetchApi from "../../../helpers/fetchApi";
 import ImgEdit from "../../../assets/edit.png";
 import ImgExit from "../../../assets/exit.png";
+import { fetchEditTicket } from "../../../api/queryTickets";
 
 const propTypes = {
   ticketData: PropTypes.object.isRequired,
@@ -35,24 +35,13 @@ export default function EditTicketForm({
   }, [ticketData.id]);
 
   const submit = async () => {
-    FetchApi(
-      "/ticket/edit",
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        signal,
-        body: JSON.stringify(newTicketData),
-      },
-      (res) => {
-        if (res.msg.success) {
-          setTicketData(newTicketData);
-        }
-        setShowEditTicket(false);
-        setIsSubmit(false);
-      }
-    );
+    const res = await fetchEditTicket(newTicketData, signal);
+
+    if (res.msg.success) {
+      setTicketData(newTicketData);
+    }
+    setShowEditTicket(false);
+    setIsSubmit(false);
   };
 
   useEffect(() => {

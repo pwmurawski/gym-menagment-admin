@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import { useContext, useEffect, useState } from "react";
+import { fetchAddTicket } from "../../../api/queryTickets";
 import ReducerContext from "../../../context/Context";
 import styles from "./AddTicketForm.module.css";
-import FetchApi from "../../../helpers/fetchApi";
 
 const propTypes = {
   ticketsArray: PropTypes.array.isRequired,
@@ -25,36 +25,25 @@ export default function AddTicketForm({ ticketsArray, setTicketsArray }) {
   const stateGlobal = useContext(ReducerContext);
 
   const submit = async () => {
-    FetchApi(
-      "/ticket/add",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        signal,
-        body: JSON.stringify(ticketData),
-      },
-      (res) => {
-        if (res.msg.success) {
-          setTicketData(initFormData);
-          setBackendMsg({
-            msg: res.msg.success,
-            status: true,
-          });
+    const res = await fetchAddTicket(ticketData, signal);
 
-          setTicketsArray([...ticketsArray, res.ticket]);
-        }
+    if (res.msg.success) {
+      setTicketData(initFormData);
+      setBackendMsg({
+        msg: res.msg.success,
+        status: true,
+      });
 
-        if (res.msg.error) {
-          setBackendMsg({
-            msg: res.msg.error,
-            status: false,
-          });
-        }
-        setIsSubmit(false);
-      }
-    );
+      setTicketsArray([...ticketsArray, res.ticket]);
+    }
+
+    if (res.msg.error) {
+      setBackendMsg({
+        msg: res.msg.error,
+        status: false,
+      });
+    }
+    setIsSubmit(false);
   };
 
   useEffect(() => {

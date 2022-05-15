@@ -1,13 +1,15 @@
-export default async function FetchApi(url, options, fnc) {
+export default async function fetch(url, options) {
   const baseUrl = process.env.REACT_APP_DATABASE;
+  let res;
 
   try {
     const request = await fetch(`${baseUrl}${url}`, options);
-    const res = await request.json();
-    fnc(res);
+    res = await request.json();
   } catch (error) {
     if (!options.signal?.aborted) {
       // console.log(error);
     }
   }
+
+  return res;
 }

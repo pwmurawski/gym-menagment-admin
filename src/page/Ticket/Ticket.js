@@ -7,7 +7,7 @@ import Tickets from "../../components/Tickets/Tickets";
 import LoadingIcon from "../../components/UI/LoadingIcon/LoadingIcon";
 import AddTicketForm from "../../components/Tickets/AddTicketForm/AddTicketForm";
 import ReducerContext from "../../context/Context";
-import FetchApi from "../../helpers/fetchApi";
+import { fetchTickets } from "../../api/queryTickets";
 
 export default function Ticket() {
   const abortController = new AbortController();
@@ -16,58 +16,47 @@ export default function Ticket() {
   const [loading, setLoading] = useState(true);
   const stateGlobal = useContext(ReducerContext);
 
-  const fetchTickets = async () => {
-    FetchApi(
-      "/ticket",
-      {
-        signal,
-      },
-      (res) => {
-        setTicketsArray(res.tickets);
-        if (res.tickets) {
-          setLoading(false);
-        }
-      }
-    );
+  const getTickets = async () => {
+    const res = await fetchTickets(signal);
+
+    if (res?.tickets) {
+      setTicketsArray(res.tickets);
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    fetchTickets();
+    getTickets();
 
     return () => {
       abortController.abort();
     };
   }, []);
 
+  if (loading) {
+    return <LoadingIcon />;
+  }
   return (
-    <div>
-      {loading ? (
-        <LoadingIcon />
-      ) : (
-        <div
-          className={`${styles.pageContainer} ${
-            styles[stateGlobal.state.theme] ?? ""
-          }`}
-        >
-          <h2>Karnety:</h2>
-          <AddTicketForm
-            ticketsArray={ticketsArray}
-            setTicketsArray={setTicketsArray}
-          />
+    <div
+      className={`${styles.pageContainer} ${
+        styles[stateGlobal.state.theme] ?? ""
+      }`}
+    >
+      <h2>Karnety:</h2>
+      <AddTicketForm
+        ticketsArray={ticketsArray}
+        setTicketsArray={setTicketsArray}
+      />
 
-          <CustomersTable>
-            <CustomersTableHead
-              headers={["Nazwa", "Cena", "Okres", "Status"]}
-            />
-            <CustomersTableBody>
-              <Tickets ticketsArray={ticketsArray} />
-            </CustomersTableBody>
-          </CustomersTable>
-          {ticketsArray.length === 0 ? (
-            <h3 className={styles.messageEmptyCustomers}>Brak karnetów</h3>
-          ) : null}
-        </div>
-      )}
+      <CustomersTable>
+        <CustomersTableHead headers={["Nazwa", "Cena", "Okres", "Status"]} />
+        <CustomersTableBody>
+          <Tickets ticketsArray={ticketsArray} />
+        </CustomersTableBody>
+      </CustomersTable>
+      {ticketsArray.length === 0 ? (
+        <h3 className={styles.messageEmptyCustomers}>Brak karnetów</h3>
+      ) : null}
     </div>
   );
 }

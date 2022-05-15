@@ -11,7 +11,7 @@ import Discount from "./page/Discount/Discount";
 import LoadingIcon from "./components/UI/LoadingIcon/LoadingIcon";
 import Search from "./page/Search/Search";
 import ReducerContext from "./context/Context";
-import { reducer, initialState } from "./reducer";
+import { reducer, initialState } from "./reducers/reducer";
 
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);

@@ -1,33 +1,41 @@
 /* eslint-disable no-param-reassign */
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
-import FetchApi from "../../../helpers/fetchApi";
+import { useContext, useEffect, useState } from "react";
 import styles from "./EditCustomer.module.css";
 import ImgEdit from "../../../assets/edit.png";
 import ImgDelete from "../../../assets/delete.png";
 import ImgExit from "../../../assets/exit.png";
+import {
+  fetchDeleteCustomer,
+  fetchEditCustomer,
+} from "../../../api/queryCustomers";
+import HomeContext from "../../../context/HomeContext";
 
 const propTypes = {
-  customerData: PropTypes.object.isRequired,
+  id: PropTypes.string.isRequired,
+  firstName: PropTypes.string.isRequired,
+  lastName: PropTypes.string.isRequired,
+  number: PropTypes.string.isRequired,
+  ticket: PropTypes.object.isRequired,
+  discount: PropTypes.object.isRequired,
   setShowEditCustomer: PropTypes.func.isRequired,
-  setCustomerData: PropTypes.func.isRequired,
-  discountArray: PropTypes.array.isRequired,
-  ticketArray: PropTypes.array.isRequired,
-  deleteCustomer: PropTypes.func.isRequired,
 };
 
 export default function EditCustomer({
-  customerData,
+  id,
+  firstName,
+  lastName,
+  number,
+  ticket,
+  discount,
   setShowEditCustomer,
-  setCustomerData,
-  discountArray,
-  ticketArray,
-  deleteCustomer,
 }) {
   const abortController = new AbortController();
   const { signal } = abortController;
   const [isSubmit, setIsSubmit] = useState(false);
-  const [customerId, setCustomerId] = useState(null);
+  const homeCon = useContext(HomeContext);
+  const { discountArray, ticketArray } = homeCon.state;
+  const { dispatch } = homeCon;
   const [newCustomerData, setNewCustomerData] = useState({
     firstName: "",
     lastName: "",
@@ -38,45 +46,38 @@ export default function EditCustomer({
   });
 
   useEffect(() => {
-    if (customerData.id) {
-      setCustomerId(customerData.id);
+    if (id) {
       setNewCustomerData({
-        firstName: customerData.firstName,
-        lastName: customerData.lastName,
-        number: customerData.number,
-        discountId: customerData.discount.id,
-        code: customerData.ticket.code,
-        ticketType: customerData.ticket.ticketTypeId,
+        firstName,
+        lastName,
+        number,
+        discountId: discount.id,
+        code: ticket.code,
+        ticketType: ticket.ticketTypeId,
       });
     }
-  }, [customerData.id]);
+  }, [id]);
+
+  const deleteCustomer = async () => {
+    const res = await fetchDeleteCustomer(id, signal);
+    if (res?.msg.success) {
+      dispatch({ type: "deleteCustomer", id });
+    }
+  };
 
   const submit = async () => {
-    FetchApi(
-      `/customer/${customerId}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        signal,
-        body: JSON.stringify(newCustomerData),
-      },
-      (res) => {
-        if (res.msg.success) {
-          setCustomerData({
-            id: res.customer.id,
-            firstName: res.customer.firstName,
-            lastName: res.customer.lastName,
-            number: res.customer.number,
-            ticket: res.customer.ticket,
-            discount: res.customer.discount,
-          });
-          setShowEditCustomer(false);
-        }
-        setIsSubmit(false);
-      }
-    );
+    const res = await fetchEditCustomer(id, newCustomerData, signal);
+
+    if (res?.msg.success) {
+      dispatch({
+        type: "editCustomer",
+        id: res.customer.id,
+        newCustomerData,
+      });
+
+      setShowEditCustomer(false);
+    }
+    setIsSubmit(false);
   };
 
   useEffect(() => {
@@ -207,7 +208,7 @@ export default function EditCustomer({
         <button
           type="button"
           onClick={() => {
-            deleteCustomer(customerId);
+            deleteCustomer();
           }}
           className={`${styles.form__btn} ${styles.form__btn_delete}`}
         >

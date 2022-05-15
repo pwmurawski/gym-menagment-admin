@@ -1,8 +1,8 @@
 import { createContext } from "react";
 
-const ReducerContext = createContext({
+const HomeContext = createContext({
   state: {},
   dispatch: () => {},
 });
 
-export default ReducerContext;
+export default HomeContext;
