@@ -11,8 +11,17 @@ import {
 } from "../../../api/queryCustomers";
 import HomeContext from "../../../context/HomeContext";
 
+const initialState = {
+  firstName: "",
+  lastName: "",
+  number: "",
+  discountId: "",
+  ticketType: "",
+  code: "",
+};
+
 const propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,
   number: PropTypes.string.isRequired,
@@ -34,16 +43,9 @@ export default function EditCustomer({
   const { signal } = abortController;
   const [isSubmit, setIsSubmit] = useState(false);
   const homeCon = useContext(HomeContext);
-  const { discountArray, ticketArray } = homeCon.state;
+  const { discountsArray, ticketsArray } = homeCon.state;
   const { dispatch } = homeCon;
-  const [newCustomerData, setNewCustomerData] = useState({
-    firstName: "",
-    lastName: "",
-    number: "",
-    discountId: "",
-    ticketType: "",
-    code: "",
-  });
+  const [newCustomerData, setNewCustomerData] = useState(initialState);
 
   useEffect(() => {
     if (id) {
@@ -60,6 +62,7 @@ export default function EditCustomer({
 
   const deleteCustomer = async () => {
     const res = await fetchDeleteCustomer(id, signal);
+
     if (res?.msg.success) {
       dispatch({ type: "deleteCustomer", id });
     }
@@ -72,7 +75,7 @@ export default function EditCustomer({
       dispatch({
         type: "editCustomer",
         id: res.customer.id,
-        newCustomerData,
+        newCustomerData: res.customer,
       });
 
       setShowEditCustomer(false);
@@ -152,7 +155,7 @@ export default function EditCustomer({
           name="ticket"
         >
           <option>Karnet</option>
-          {ticketArray.map((ticketEl) => (
+          {ticketsArray?.map((ticketEl) => (
             <option
               key={ticketEl.id}
               value={ticketEl.id}
@@ -180,7 +183,7 @@ export default function EditCustomer({
           name="discount"
         >
           <option>Znizka</option>
-          {discountArray.map((discountEl) => (
+          {discountsArray?.map((discountEl) => (
             <option
               key={discountEl.id}
               value={discountEl.id}

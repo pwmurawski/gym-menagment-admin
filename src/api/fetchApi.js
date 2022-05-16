@@ -1,4 +1,4 @@
-export default async function fetch(url, options) {
+export default async function fetchApi(url, options) {
   const baseUrl = process.env.REACT_APP_DATABASE;
   let res;
 
@@ -10,6 +10,5 @@ export default async function fetch(url, options) {
       // console.log(error);
     }
   }
-
   return res;
 }

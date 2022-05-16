@@ -7,8 +7,6 @@ import CustomersTableBody from "../../components/CustomersTable/CustomersTableBo
 import Customers from "../../components/Customers/Customers";
 import LoadingIcon from "../../components/UI/LoadingIcon/LoadingIcon";
 import ReducerContext from "../../context/Context";
-import { fetchDiscounts } from "../../api/queryDiscounts";
-import { fetchTickets } from "../../api/queryTickets";
 import { fetchSearchCustomer } from "../../api/queryCustomers";
 
 export default function Search() {
@@ -16,8 +14,6 @@ export default function Search() {
   const { signal } = abortController;
   const [loading, setLoading] = useState(true);
   const [customersArray, setCustomersArray] = useState([]);
-  const [discountArray, setDiscountArray] = useState([]);
-  const [ticketArray, setTicketArray] = useState([]);
   const { term } = useParams();
   const stateGlobal = useContext(ReducerContext);
 
@@ -29,16 +25,6 @@ export default function Search() {
     }
   };
 
-  const getDiscounts = async () => {
-    const res = await fetchDiscounts(signal);
-    if (res) setDiscountArray(res.discounts);
-  };
-
-  const getTickets = async () => {
-    const res = await fetchTickets(signal);
-    if (res) setTicketArray(res.tickets);
-  };
-
   useEffect(() => {
     search();
 
@@ -46,15 +32,6 @@ export default function Search() {
       abortController.abort();
     };
   }, [term]);
-
-  useEffect(() => {
-    getDiscounts();
-    getTickets();
-
-    return () => {
-      abortController.abort();
-    };
-  }, []);
 
   if (loading) {
     return <LoadingIcon />;
@@ -71,12 +48,7 @@ export default function Search() {
           headers={["Imie", "Nazwisko", "Numer", "Karnet", "Znizka", "Data"]}
         />
         <CustomersTableBody>
-          <Customers
-            customersArray={customersArray}
-            setCustomersArray={setCustomersArray}
-            discountArray={discountArray}
-            ticketArray={ticketArray}
-          />
+          <Customers customersArray={customersArray} />
         </CustomersTableBody>
       </CustomersTable>
       {customersArray.length === 0 ? (

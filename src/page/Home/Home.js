@@ -41,14 +41,13 @@ export default function Home() {
   const getDiscounts = async () => {
     const res = await fetchDiscounts(signal);
 
-    if (res)
-      dispatch({ type: "setDiscountsArray", discountsArray: res.discounts });
+    if (res) dispatch({ type: "setDiscountsArray", discounts: res.discounts });
   };
 
   const getTickets = async () => {
     const res = await fetchTickets(signal);
 
-    if (res) dispatch({ type: "setTicketsArray", ticketsArray: res.tickets });
+    if (res) dispatch({ type: "setTicketsArray", tickets: res.tickets });
   };
 
   useEffect(() => {
@@ -89,7 +88,7 @@ export default function Home() {
             headers={["Imie i Nazwisko", "Numer", "Karnet", "Znizka", "Data"]}
           />
           <CustomersTableBody>
-            <Customers />
+            <Customers customersArray={state.customersArray} />
           </CustomersTableBody>
         </CustomersTable>
         {state.customersArray.length === 0 ? (

@@ -6,7 +6,7 @@ import ReducerContext from "../../../context/Context";
 import randomColor from "../../../helpers/randomColor";
 
 const propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,
   number: PropTypes.string.isRequired,

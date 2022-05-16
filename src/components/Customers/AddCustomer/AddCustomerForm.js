@@ -25,14 +25,14 @@ export default function AddCustomerForm({ tablePage }) {
   const [customerData, setCustomerData] = useState(initFormData);
   const [isSubmit, setIsSubmit] = useState(false);
   const homeCon = useContext(HomeContext);
-  const { discountArray, ticketArray } = homeCon.state;
+  const { discountsArray, ticketsArray } = homeCon.state;
   const { dispatch } = homeCon;
   const stateGlobal = useContext(ReducerContext);
 
   const submit = async () => {
     const res = await fetchAddCustomer(customerData, signal);
 
-    if (res.msg.success) {
+    if (res?.msg.success) {
       setCustomerData(initFormData);
       setBackendMsg({
         msg: res.msg.success,
@@ -52,7 +52,7 @@ export default function AddCustomerForm({ tablePage }) {
       }
     }
 
-    if (res.msg.error) {
+    if (res?.msg.error) {
       setBackendMsg({
         msg: res.msg.error,
         status: false,
@@ -150,7 +150,7 @@ export default function AddCustomerForm({ tablePage }) {
           name="ticket"
         >
           <option>Karnet</option>
-          {ticketArray.map((ticket) => (
+          {ticketsArray?.map((ticket) => (
             <option key={ticket.id} value={ticket.id} disabled={!ticket.status}>
               {`${ticket.name} | ${ticket.activeDays} ${
                 ticket.activeDays === 1 ? "dzień" : "dni"
@@ -167,7 +167,7 @@ export default function AddCustomerForm({ tablePage }) {
           name="discount"
         >
           <option>Znizka</option>
-          {discountArray.map((discount) => (
+          {discountsArray?.map((discount) => (
             <option
               key={discount.id}
               value={discount.id}

@@ -1,11 +1,11 @@
-import { useContext } from "react";
-import HomeContext from "../../context/HomeContext";
+import PropTypes from "prop-types";
 import Customer from "./Customer/Customer";
 
-export default function Customers() {
-  const homeCon = useContext(HomeContext);
-  const { customersArray } = homeCon.state;
+const propTypes = {
+  customersArray: PropTypes.array.isRequired,
+};
 
+export default function Customers({ customersArray }) {
   return (
     <>
       {customersArray.map((customer) => (
@@ -22,3 +22,5 @@ export default function Customers() {
     </>
   );
 }
+
+Customers.propTypes = propTypes;

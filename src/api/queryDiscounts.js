@@ -1,13 +1,13 @@
-import fetch from "./fetchApi";
+import fetchApi from "./fetchApi";
 
 export const fetchDiscounts = (signal) => {
-  return fetch("/discount", {
+  return fetchApi("/discount", {
     signal,
   });
 };
 
 export const fetchAddDiscount = (discountData, signal) => {
-  return fetch("/discount/add", {
+  return fetchApi("/discount/add", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -18,7 +18,7 @@ export const fetchAddDiscount = (discountData, signal) => {
 };
 
 export const fetchEditDiscount = (newDiscountData, signal) => {
-  return fetch("/discount/edit", {
+  return fetchApi("/discount/edit", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

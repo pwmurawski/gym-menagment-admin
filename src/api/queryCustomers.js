@@ -1,11 +1,11 @@
-import fetch from "./fetchApi";
+import fetchApi from "./fetchApi";
 
 export const fetchCustomersPage = (currentPage, signal) => {
-  return fetch(`/customer?page=${currentPage}`, { signal });
+  return fetchApi(`/customer?page=${currentPage}`, { signal });
 };
 
 export const fetchAddCustomer = (customerData, signal) => {
-  return fetch("/customer/add", {
+  return fetchApi("/customer/add", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -16,7 +16,7 @@ export const fetchAddCustomer = (customerData, signal) => {
 };
 
 export const fetchEditCustomer = (id, newCustomerData, signal) => {
-  return fetch(`/customer/${id}`, {
+  return fetchApi(`/customer/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -27,7 +27,7 @@ export const fetchEditCustomer = (id, newCustomerData, signal) => {
 };
 
 export const fetchDeleteCustomer = (id, signal) => {
-  return fetch(`/customer/${id}`, {
+  return fetchApi(`/customer/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -37,7 +37,7 @@ export const fetchDeleteCustomer = (id, signal) => {
 };
 
 export const fetchSearchCustomer = (term, signal) => {
-  return fetch(`/customer/search?q=${term}`, {
+  return fetchApi(`/customer/search?q=${term}`, {
     signal,
   });
 };

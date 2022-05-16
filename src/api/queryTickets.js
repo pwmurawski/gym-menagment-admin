@@ -1,13 +1,13 @@
-import fetch from "./fetchApi";
+import fetchApi from "./fetchApi";
 
 export const fetchTickets = (signal) => {
-  return fetch("/ticket", {
+  return fetchApi("/ticket", {
     signal,
   });
 };
 
 export const fetchAddTicket = (ticketData, signal) => {
-  return fetch("/ticket/add", {
+  return fetchApi("/ticket/add", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -18,7 +18,7 @@ export const fetchAddTicket = (ticketData, signal) => {
 };
 
 export const fetchEditTicket = (newTicketData, signal) => {
-  return fetch("/ticket/edit", {
+  return fetchApi("/ticket/edit", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
