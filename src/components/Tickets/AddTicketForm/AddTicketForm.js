@@ -1,8 +1,15 @@
 import PropTypes from "prop-types";
-import { useContext, useEffect, useState } from "react";
-import { fetchAddTicket } from "../../../api/queryTickets";
+import { useContext } from "react";
 import ReducerContext from "../../../context/Context";
+import useAddTicketForm from "../../../hooks/useAddTicketForm";
 import styles from "./AddTicketForm.module.css";
+
+const initFormData = {
+  name: "",
+  price: "",
+  activeDays: "",
+  status: false,
+};
 
 const propTypes = {
   ticketsArray: PropTypes.array.isRequired,
@@ -10,64 +17,12 @@ const propTypes = {
 };
 
 export default function AddTicketForm({ ticketsArray, setTicketsArray }) {
-  const initFormData = {
-    name: "",
-    price: "",
-    activeDays: "",
-    status: false,
-  };
-
-  const abortController = new AbortController();
-  const { signal } = abortController;
-  const [ticketData, setTicketData] = useState(initFormData);
-  const [backendMsg, setBackendMsg] = useState(null);
-  const [isSubmit, setIsSubmit] = useState(false);
   const stateGlobal = useContext(ReducerContext);
-
-  const submit = async () => {
-    const res = await fetchAddTicket(ticketData, signal);
-
-    if (res.msg.success) {
-      setTicketData(initFormData);
-      setBackendMsg({
-        msg: res.msg.success,
-        status: true,
-      });
-
-      setTicketsArray([...ticketsArray, res.ticket]);
-    }
-
-    if (res.msg.error) {
-      setBackendMsg({
-        msg: res.msg.error,
-        status: false,
-      });
-    }
-    setIsSubmit(false);
-  };
-
-  useEffect(() => {
-    if (isSubmit) {
-      submit();
-    }
-
-    return () => {
-      abortController.abort();
-    };
-  }, [isSubmit]);
-
-  useEffect(() => {
-    if (backendMsg) {
-      const timeOut = setTimeout(() => {
-        setBackendMsg(null);
-      }, 5000);
-      return () => {
-        clearTimeout(timeOut);
-      };
-    }
-
-    return null;
-  }, [backendMsg]);
+  const [ticketData, setTicketData, addTicket, backendMsg] = useAddTicketForm(
+    initFormData,
+    ticketsArray,
+    setTicketsArray
+  );
 
   return (
     <>
@@ -86,7 +41,7 @@ export default function AddTicketForm({ ticketsArray, setTicketsArray }) {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          setIsSubmit(true);
+          addTicket();
         }}
         className={`${styles.form} ${styles[stateGlobal.state.theme] ?? ""}`}
       >

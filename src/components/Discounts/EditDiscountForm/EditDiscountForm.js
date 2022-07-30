@@ -1,9 +1,8 @@
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
 import styles from "./EditDiscountForm.module.css";
 import ImgEdit from "../../../assets/edit.png";
 import ImgExit from "../../../assets/exit.png";
-import { fetchEditDiscount } from "../../../api/queryDiscounts";
+import useEditDiscount from "../../../hooks/useEditDiscount";
 
 const propTypes = {
   discountData: PropTypes.object.isRequired,
@@ -16,56 +15,10 @@ export default function EditDiscountForm({
   setDiscountData,
   setShowEditDiscount,
 }) {
-  const abortController = new AbortController();
-  const { signal } = abortController;
-  const [backendMsg, setBackendMsg] = useState(null);
-  const [isSubmit, setIsSubmit] = useState(false);
-  const [newDiscountData, setNewDiscountData] = useState({
-    id: null,
-    name: "",
-    discount: "",
-    status: false,
-  });
-
-  useEffect(() => {
-    if (discountData.id) {
-      setNewDiscountData(discountData);
-    }
-  }, [discountData.id]);
-
-  const submit = async () => {
-    const res = await fetchEditDiscount(newDiscountData, signal);
-
-    if (res.msg.success) {
-      setDiscountData(newDiscountData);
-    }
-
-    setShowEditDiscount(false);
-    setIsSubmit(false);
-  };
-
-  useEffect(() => {
-    if (isSubmit) {
-      submit();
-    }
-
-    return () => {
-      abortController.abort();
-    };
-  }, [isSubmit]);
-
-  useEffect(() => {
-    if (backendMsg) {
-      const timeOut = setTimeout(() => {
-        setBackendMsg(null);
-      }, 5000);
-      return () => {
-        clearTimeout(timeOut);
-      };
-    }
-
-    return null;
-  }, [backendMsg]);
+  const [newDiscountData, setNewDiscountData, editDiscount] = useEditDiscount(
+    discountData,
+    setDiscountData
+  );
 
   return (
     <>
@@ -112,7 +65,8 @@ export default function EditDiscountForm({
         <button
           type="submit"
           onClick={() => {
-            setIsSubmit(true);
+            editDiscount();
+            setShowEditDiscount(false);
           }}
           className={`${styles.form__btn} ${styles.form__btn_edit}`}
         >

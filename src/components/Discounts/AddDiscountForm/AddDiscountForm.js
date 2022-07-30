@@ -1,8 +1,14 @@
 import PropTypes from "prop-types";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import styles from "./AddDiscountForm.module.css";
 import ReducerContext from "../../../context/Context";
-import { fetchAddDiscount } from "../../../api/queryDiscounts";
+import useAddDiscount from "../../../hooks/useAddDiscount";
+
+const initFormData = {
+  name: "",
+  discount: "",
+  status: false,
+};
 
 const propTypes = {
   discountsArray: PropTypes.array.isRequired,
@@ -10,63 +16,9 @@ const propTypes = {
 };
 
 export default function AddDiscountForm({ discountsArray, setDiscountsArray }) {
-  const initFormData = {
-    name: "",
-    discount: "",
-    status: false,
-  };
-
-  const abortController = new AbortController();
-  const { signal } = abortController;
-  const [discountData, setDiscountData] = useState(initFormData);
-  const [backendMsg, setBackendMsg] = useState(null);
-  const [isSubmit, setIsSubmit] = useState(false);
   const stateGlobal = useContext(ReducerContext);
-
-  const submit = async () => {
-    const res = await fetchAddDiscount(discountData, signal);
-
-    if (res.msg.success) {
-      setDiscountData(initFormData);
-      setBackendMsg({
-        msg: res.msg.success,
-        status: true,
-      });
-
-      setDiscountsArray([...discountsArray, res.discount]);
-    }
-
-    if (res.msg.error) {
-      setBackendMsg({
-        msg: res.msg.error,
-        status: false,
-      });
-    }
-    setIsSubmit(false);
-  };
-
-  useEffect(() => {
-    if (isSubmit) {
-      submit();
-    }
-
-    return () => {
-      abortController.abort();
-    };
-  }, [isSubmit]);
-
-  useEffect(() => {
-    if (backendMsg) {
-      const timeOut = setTimeout(() => {
-        setBackendMsg(null);
-      }, 5000);
-      return () => {
-        clearTimeout(timeOut);
-      };
-    }
-
-    return null;
-  }, [backendMsg]);
+  const [discountData, setDiscountData, addDiscount, backendMsg] =
+    useAddDiscount(initFormData, discountsArray, setDiscountsArray);
 
   return (
     <>
@@ -85,7 +37,7 @@ export default function AddDiscountForm({ discountsArray, setDiscountsArray }) {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          setIsSubmit(true);
+          addDiscount();
         }}
         className={`${styles.form} ${styles[stateGlobal.state.theme] ?? ""}`}
       >

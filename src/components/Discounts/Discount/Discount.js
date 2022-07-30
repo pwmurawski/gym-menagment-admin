@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import styles from "./Discount.module.css";
 import ReducerContext from "../../../context/Context";
 import EditDiscountForm from "../EditDiscountForm/EditDiscountForm";
+import useInitStateProps from "../../../hooks/useInitStateProps";
 
 const propTypes = {
   id: PropTypes.number.isRequired,
@@ -14,23 +15,12 @@ const propTypes = {
 export default function Discount({ id, name, discount, status }) {
   const stateGlobal = useContext(ReducerContext);
   const [showEditDiscount, setShowEditDiscount] = useState(false);
-  const [discountData, setDiscountData] = useState({
-    id: null,
-    name: "",
-    discount: "",
-    status: false,
+  const [discountData, setDiscountData] = useInitStateProps(id, {
+    id,
+    name,
+    discount,
+    status,
   });
-
-  useEffect(() => {
-    if (id) {
-      setDiscountData({
-        id,
-        name,
-        discount,
-        status,
-      });
-    }
-  }, [id]);
 
   return (
     <tr

@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import styles from "./Ticket.module.css";
 import ReducerContext from "../../../context/Context";
 import EditTicketForm from "../EditTicketForm/EditTicketForm";
+import useInitStateProps from "../../../hooks/useInitStateProps";
 
 const propTypes = {
   id: PropTypes.number.isRequired,
@@ -15,25 +16,13 @@ const propTypes = {
 export default function Ticket({ id, name, price, activeDays, status }) {
   const stateGlobal = useContext(ReducerContext);
   const [showEditTicket, setShowEditTicket] = useState(false);
-  const [ticketData, setTicketData] = useState({
-    id: null,
-    name: "",
-    price: "",
-    activeDays: "",
-    status: false,
+  const [ticketData, setTicketData] = useInitStateProps(id, {
+    id,
+    name,
+    price,
+    activeDays,
+    status,
   });
-
-  useEffect(() => {
-    if (id) {
-      setTicketData({
-        id,
-        name,
-        price,
-        activeDays,
-        status,
-      });
-    }
-  }, [id]);
 
   return (
     <tr

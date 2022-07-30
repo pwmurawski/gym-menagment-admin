@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import styles from "./Ticket.module.css";
 import CustomersTable from "../../components/CustomersTable/CustomersTable";
 import CustomersTableHead from "../../components/CustomersTable/CustomersTableHead/CustomersTableHead";
@@ -7,31 +7,11 @@ import Tickets from "../../components/Tickets/Tickets";
 import LoadingIcon from "../../components/UI/LoadingIcon/LoadingIcon";
 import AddTicketForm from "../../components/Tickets/AddTicketForm/AddTicketForm";
 import ReducerContext from "../../context/Context";
-import { fetchTickets } from "../../api/queryTickets";
+import useTickets from "../../hooks/useTickets";
 
 export default function Ticket() {
-  const abortController = new AbortController();
-  const { signal } = abortController;
-  const [ticketsArray, setTicketsArray] = useState([]);
-  const [loading, setLoading] = useState(true);
   const stateGlobal = useContext(ReducerContext);
-
-  const getTickets = async () => {
-    const res = await fetchTickets(signal);
-
-    if (res?.tickets) {
-      setTicketsArray(res.tickets);
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getTickets();
-
-    return () => {
-      abortController.abort();
-    };
-  }, []);
+  const [ticketsArray, setTicketsArray, loading] = useTickets();
 
   if (loading) {
     return <LoadingIcon />;

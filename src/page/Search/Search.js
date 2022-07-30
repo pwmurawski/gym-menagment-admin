@@ -1,5 +1,4 @@
-import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useContext } from "react";
 import styles from "./Search.module.css";
 import CustomersTable from "../../components/CustomersTable/CustomersTable";
 import CustomersTableHead from "../../components/CustomersTable/CustomersTableHead/CustomersTableHead";
@@ -7,31 +6,11 @@ import CustomersTableBody from "../../components/CustomersTable/CustomersTableBo
 import Customers from "../../components/Customers/Customers";
 import LoadingIcon from "../../components/UI/LoadingIcon/LoadingIcon";
 import ReducerContext from "../../context/Context";
-import { fetchSearchCustomer } from "../../api/queryCustomers";
+import useSearchCustomer from "../../hooks/useSearchCustomer";
 
 export default function Search() {
-  const abortController = new AbortController();
-  const { signal } = abortController;
-  const [loading, setLoading] = useState(true);
-  const [customersArray, setCustomersArray] = useState([]);
-  const { term } = useParams();
   const stateGlobal = useContext(ReducerContext);
-
-  const search = async () => {
-    const res = await fetchSearchCustomer(term, signal);
-    if (res) {
-      setCustomersArray(res.customers);
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    search();
-
-    return () => {
-      abortController.abort();
-    };
-  }, [term]);
+  const [customersArray, loading] = useSearchCustomer();
 
   if (loading) {
     return <LoadingIcon />;

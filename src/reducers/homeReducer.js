@@ -41,6 +41,9 @@ export const homeReducer = (state, action) => {
 
       return { ...state, customersArray: newCustomersArray };
 
+    case "setCustomersArray":
+      return { ...state, customersArray: action.customers };
+
     case "setDiscountsArray":
       return { ...state, discountsArray: action.discounts };
 

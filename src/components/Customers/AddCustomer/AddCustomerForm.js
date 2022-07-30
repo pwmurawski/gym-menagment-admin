@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 import styles from "./AddCustomerForm.module.css";
 import ReducerContext from "../../../context/Context";
-import { fetchAddCustomer } from "../../../api/queryCustomers";
 import HomeContext from "../../../context/HomeContext";
+import useAddCustomer from "../../../hooks/useAddCustomer";
 
 const initFormData = {
   firstName: "",
@@ -19,70 +19,11 @@ const propTypes = {
 };
 
 export default function AddCustomerForm({ tablePage }) {
-  const abortController = new AbortController();
-  const { signal } = abortController;
-  const [backendMsg, setBackendMsg] = useState(null);
-  const [customerData, setCustomerData] = useState(initFormData);
-  const [isSubmit, setIsSubmit] = useState(false);
   const homeCon = useContext(HomeContext);
-  const { discountsArray, ticketsArray } = homeCon.state;
-  const { dispatch } = homeCon;
+  const { discountsArray, ticketsArray } = homeCon.stateH;
   const stateGlobal = useContext(ReducerContext);
-
-  const submit = async () => {
-    const res = await fetchAddCustomer(customerData, signal);
-
-    if (res?.msg.success) {
-      setCustomerData(initFormData);
-      setBackendMsg({
-        msg: res.msg.success,
-        status: true,
-      });
-
-      if (tablePage.currentPage !== tablePage.totalPages - 1) {
-        dispatch({
-          type: "addBeginCustomerNotLastPage",
-          customer: res.customer,
-        });
-      } else {
-        dispatch({
-          type: "addBeginCustomer",
-          customer: res.customer,
-        });
-      }
-    }
-
-    if (res?.msg.error) {
-      setBackendMsg({
-        msg: res.msg.error,
-        status: false,
-      });
-    }
-    setIsSubmit(false);
-  };
-
-  useEffect(() => {
-    if (isSubmit) {
-      submit();
-    }
-
-    return () => {
-      abortController.abort();
-    };
-  }, [isSubmit]);
-
-  useEffect(() => {
-    if (backendMsg) {
-      const timeOut = setTimeout(() => {
-        setBackendMsg(null);
-      }, 5000);
-      return () => {
-        clearTimeout(timeOut);
-      };
-    }
-
-    return null;
-  }, [backendMsg]);
+  const [customerData, setCustomerData, addCustomer, backendMsg] =
+    useAddCustomer(initFormData, tablePage);
 
   return (
     <>
@@ -101,7 +42,7 @@ export default function AddCustomerForm({ tablePage }) {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          setIsSubmit(true);
+          addCustomer();
         }}
         className={`${styles.form} ${styles[stateGlobal.state.theme] ?? ""}`}
       >

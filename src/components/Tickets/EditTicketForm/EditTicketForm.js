@@ -1,9 +1,8 @@
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
 import styles from "./EditTicketForm.module.css";
 import ImgEdit from "../../../assets/edit.png";
 import ImgExit from "../../../assets/exit.png";
-import { fetchEditTicket } from "../../../api/queryTickets";
+import useEditTicketForm from "../../../hooks/useEditTicketForm";
 
 const propTypes = {
   ticketData: PropTypes.object.isRequired,
@@ -16,56 +15,10 @@ export default function EditTicketForm({
   setTicketData,
   setShowEditTicket,
 }) {
-  const abortController = new AbortController();
-  const { signal } = abortController;
-  const [backendMsg, setBackendMsg] = useState(null);
-  const [isSubmit, setIsSubmit] = useState(false);
-  const [newTicketData, setNewTicketData] = useState({
-    id: null,
-    name: "",
-    price: "",
-    activeDays: "",
-    status: false,
-  });
-
-  useEffect(() => {
-    if (ticketData.id) {
-      setNewTicketData(ticketData);
-    }
-  }, [ticketData.id]);
-
-  const submit = async () => {
-    const res = await fetchEditTicket(newTicketData, signal);
-
-    if (res.msg.success) {
-      setTicketData(newTicketData);
-    }
-    setShowEditTicket(false);
-    setIsSubmit(false);
-  };
-
-  useEffect(() => {
-    if (isSubmit) {
-      submit();
-    }
-
-    return () => {
-      abortController.abort();
-    };
-  }, [isSubmit]);
-
-  useEffect(() => {
-    if (backendMsg) {
-      const timeOut = setTimeout(() => {
-        setBackendMsg(null);
-      }, 5000);
-      return () => {
-        clearTimeout(timeOut);
-      };
-    }
-
-    return null;
-  }, [backendMsg]);
+  const [newTicketData, setNewTicketData, editTicket] = useEditTicketForm(
+    ticketData,
+    setTicketData
+  );
 
   return (
     <>
@@ -120,7 +73,8 @@ export default function EditTicketForm({
         <button
           type="submit"
           onClick={() => {
-            setIsSubmit(true);
+            editTicket();
+            setShowEditTicket(false);
           }}
           className={`${styles.form__btn} ${styles.form__btn_edit}`}
         >

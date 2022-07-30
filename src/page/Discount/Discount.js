@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import styles from "./Discount.module.css";
 import CustomersTable from "../../components/CustomersTable/CustomersTable";
 import CustomersTableHead from "../../components/CustomersTable/CustomersTableHead/CustomersTableHead";
@@ -7,31 +7,11 @@ import LoadingIcon from "../../components/UI/LoadingIcon/LoadingIcon";
 import Discounts from "../../components/Discounts/Discounts";
 import AddDiscountForm from "../../components/Discounts/AddDiscountForm/AddDiscountForm";
 import ReducerContext from "../../context/Context";
-import { fetchDiscounts } from "../../api/queryDiscounts";
+import useDiscounts from "../../hooks/useDiscounts";
 
 export default function Discount() {
-  const abortController = new AbortController();
-  const { signal } = abortController;
-  const [discountsArray, setDiscountsArray] = useState([]);
-  const [loading, setLoading] = useState(true);
   const stateGlobal = useContext(ReducerContext);
-
-  const getDiscounts = async () => {
-    const res = await fetchDiscounts(signal);
-
-    if (res?.discounts) {
-      setDiscountsArray(res.discounts);
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getDiscounts();
-
-    return () => {
-      abortController.abort();
-    };
-  }, []);
+  const [discountsArray, setDiscountsArray, loading] = useDiscounts();
 
   if (loading) {
     return <LoadingIcon />;

@@ -1,15 +1,13 @@
 /* eslint-disable no-param-reassign */
 import PropTypes from "prop-types";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import styles from "./EditCustomer.module.css";
 import ImgEdit from "../../../assets/edit.png";
 import ImgDelete from "../../../assets/delete.png";
 import ImgExit from "../../../assets/exit.png";
-import {
-  fetchDeleteCustomer,
-  fetchEditCustomer,
-} from "../../../api/queryCustomers";
 import HomeContext from "../../../context/HomeContext";
+import useDeleteCustomer from "../../../hooks/useDeleteCustomer";
+import useEditCustomer from "../../../hooks/useEditCustomer";
 
 const initialState = {
   firstName: "",
@@ -39,59 +37,20 @@ export default function EditCustomer({
   discount,
   setShowEditCustomer,
 }) {
-  const abortController = new AbortController();
-  const { signal } = abortController;
-  const [isSubmit, setIsSubmit] = useState(false);
   const homeCon = useContext(HomeContext);
-  const { discountsArray, ticketsArray } = homeCon.state;
-  const { dispatch } = homeCon;
-  const [newCustomerData, setNewCustomerData] = useState(initialState);
-
-  useEffect(() => {
-    if (id) {
-      setNewCustomerData({
-        firstName,
-        lastName,
-        number,
-        discountId: discount.id,
-        code: ticket.code,
-        ticketType: ticket.ticketTypeId,
-      });
+  const { discountsArray, ticketsArray } = homeCon.stateH;
+  const deleteCustomer = useDeleteCustomer();
+  const [newCustomerData, setNewCustomerData, editCustomer] = useEditCustomer(
+    initialState,
+    {
+      id,
+      firstName,
+      lastName,
+      number,
+      ticket,
+      discount,
     }
-  }, [id]);
-
-  const deleteCustomer = async () => {
-    const res = await fetchDeleteCustomer(id, signal);
-
-    if (res?.msg.success) {
-      dispatch({ type: "deleteCustomer", id });
-    }
-  };
-
-  const submit = async () => {
-    const res = await fetchEditCustomer(id, newCustomerData, signal);
-
-    if (res?.msg.success) {
-      dispatch({
-        type: "editCustomer",
-        id: res.customer.id,
-        newCustomerData: res.customer,
-      });
-
-      setShowEditCustomer(false);
-    }
-    setIsSubmit(false);
-  };
-
-  useEffect(() => {
-    if (isSubmit) {
-      submit();
-    }
-
-    return () => {
-      abortController.abort();
-    };
-  }, [isSubmit]);
+  );
 
   return (
     <>
@@ -199,7 +158,8 @@ export default function EditCustomer({
         <button
           type="submit"
           onClick={() => {
-            setIsSubmit(true);
+            editCustomer();
+            setShowEditCustomer(false);
           }}
           className={`${styles.form__btn} ${styles.form__btn_edit}`}
         >
@@ -211,7 +171,7 @@ export default function EditCustomer({
         <button
           type="button"
           onClick={() => {
-            deleteCustomer();
+            deleteCustomer(id);
           }}
           className={`${styles.form__btn} ${styles.form__btn_delete}`}
         >
